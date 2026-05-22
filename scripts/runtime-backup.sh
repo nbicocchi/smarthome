@@ -27,7 +27,7 @@ tar -czf "$BACKUP_FILE" \
   --exclude="runtime/mosquitto/log" \
   --exclude="runtime/zigbee2mqtt/log" \
   --exclude="runtime/portainer/bin" \
-  "runtime"
+  "$RUNTIME"
 
 echo "✅ Backup created: $BACKUP_FILE"
 
