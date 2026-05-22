@@ -1,0 +1,17 @@
+# runtime state (NEVER commit)
+runtime/
+
+# backups (optional but recommended)
+backups/
+
+# logs
+**/log/
+**/*.log
+
+# sensitive data
+**/passwd
+**/mosquitto/passwd
+
+# safety backups from scripts
+runtime_old_*
+runtime.bak_*
