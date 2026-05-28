@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BASE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # Define our stacks
-STACKS=("iot" "network" "media")
+STACKS=("iot" "network" "media" "proxy")
 BACKUP_DIR="$BASE_DIR/backups"
 
 TIMESTAMP="$(date +%Y-%m-%d_%H-%M-%S)"
@@ -33,16 +33,7 @@ fi
 
 echo "🗜️ Archiving: ${RUNTIMES[*]}"
 
-tar -czf "$BACKUP_FILE" \
-  --exclude="*/homeassistant/home-assistant_v2.db*" \
-  --exclude="*/homeassistant/.cache" \
-  --exclude="*/homeassistant/tts" \
-  --exclude="*/homeassistant/deps" \
-  --exclude="*/mosquitto/log" \
-  --exclude="*/zigbee2mqtt/log" \
-  --exclude="*/portainer/bin" \
-  --exclude="*/jellyfin/cache" \
-  "${RUNTIMES[@]}"
+tar -czf "$BACKUP_FILE" "${RUNTIMES[@]}"
 
 echo "✅ Backup created: $BACKUP_FILE"
 
