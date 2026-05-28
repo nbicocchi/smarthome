@@ -39,30 +39,6 @@ services:
       - iot
 
 
-  homeassistant:
-    container_name: homeassistant
-    image: ghcr.io/home-assistant/home-assistant:2026.5
-    restart: always
-
-    depends_on:
-      - mosquitto
-
-    ports:
-      - "8123:8123"
-
-    volumes:
-      - ./runtime/homeassistant:/config
-      - /etc/localtime:/etc/localtime:ro
-
-    environment:
-      - TZ=Europe/Rome
-
-    privileged: true
-
-    networks:
-      - iot
-
-
   portainer:
     container_name: portainer
     image: portainer/portainer-ce:2.42.0-alpine

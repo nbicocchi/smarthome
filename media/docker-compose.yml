@@ -1,0 +1,24 @@
+services:
+
+  jellyfin:
+    container_name: jellyfin
+    image: jellyfin/jellyfin:latest
+    restart: always
+
+    ports:
+      - "8096:8096"
+
+    volumes:
+      - ./runtime/jellyfin/config:/config
+      - ./runtime/jellyfin/cache:/cache
+      - ./runtime/jellyfin/media:/media
+
+    environment:
+      - TZ=Europe/Rome
+
+    networks:
+      - media
+
+networks:
+  media:
+    driver: bridge

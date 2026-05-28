@@ -4,7 +4,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BASE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-RUNTIME="$BASE_DIR/runtime"
+# Define our stacks
+STACKS=("iot" "network" "media")
 BACKUP_DIR="$BASE_DIR/backups"
 
 TIMESTAMP="$(date +%Y-%m-%d_%H-%M-%S)"
@@ -17,17 +18,31 @@ echo "📦 Starting runtime backup..."
 # Eseguiamo il backup dalla cartella base per percorsi relativi puliti
 cd "$BASE_DIR"
 
+# Raccogli le cartelle runtime esistenti
+RUNTIMES=()
+for stack in "${STACKS[@]}"; do
+  if [ -d "$stack/runtime" ]; then
+    RUNTIMES+=("$stack/runtime")
+  fi
+done
+
+if [ ${#RUNTIMES[@]} -eq 0 ]; then
+  echo "⚠️ No runtime folders found to backup!"
+  exit 0
+fi
+
+echo "🗜️ Archiving: ${RUNTIMES[*]}"
+
 tar -czf "$BACKUP_FILE" \
-  --exclude="runtime/homeassistant/home-assistant_v2.db" \
-  --exclude="runtime/homeassistant/home-assistant_v2.db-shm" \
-  --exclude="runtime/homeassistant/home-assistant_v2.db-wal" \
-  --exclude="runtime/homeassistant/.cache" \
-  --exclude="runtime/homeassistant/tts" \
-  --exclude="runtime/homeassistant/deps" \
-  --exclude="runtime/mosquitto/log" \
-  --exclude="runtime/zigbee2mqtt/log" \
-  --exclude="runtime/portainer/bin" \
-  "$RUNTIME"
+  --exclude="*/homeassistant/home-assistant_v2.db*" \
+  --exclude="*/homeassistant/.cache" \
+  --exclude="*/homeassistant/tts" \
+  --exclude="*/homeassistant/deps" \
+  --exclude="*/mosquitto/log" \
+  --exclude="*/zigbee2mqtt/log" \
+  --exclude="*/portainer/bin" \
+  --exclude="*/jellyfin/cache" \
+  "${RUNTIMES[@]}"
 
 echo "✅ Backup created: $BACKUP_FILE"
 
