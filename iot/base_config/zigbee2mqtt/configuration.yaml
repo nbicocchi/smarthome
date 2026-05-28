@@ -11,7 +11,3 @@ frontend:
   port: 8080
 advanced:
   log_level: info
-version: 5
-devices:
-  '0xa4c13860a6db179c':
-    friendly_name: '0xa4c13860a6db179c'
