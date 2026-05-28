@@ -10,5 +10,5 @@ services:
       - "443:443"
 
     volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
+      - ./runtime/npm/data:/data
+      - ./runtime/npm/letsencrypt:/etc/letsencrypt
