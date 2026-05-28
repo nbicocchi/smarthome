@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BASE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-STACKS=("iot" "network" "media")
+STACKS=("iot" "network" "media" "proxy")
 BACKUP_DIR="$BASE_DIR/backups"
 LATEST="$BACKUP_DIR/latest.tar.gz"
 

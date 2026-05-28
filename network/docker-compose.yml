@@ -5,21 +5,8 @@ services:
     image: adguard/adguardhome:latest
     restart: always
 
-    ports:
-      - "192.168.1.162:53:53/tcp"
-      - "192.168.1.162:53:53/udp"
-      - "3000:3000/tcp"
-      - "80:80/tcp"
-      - "443:443/tcp"
-      - "443:443/udp"
+    network_mode: host
 
     volumes:
       - ./runtime/adguard/work:/opt/adguardhome/work
       - ./runtime/adguard/conf:/opt/adguardhome/conf
-
-    networks:
-      - network
-
-networks:
-  network:
-    driver: bridge
