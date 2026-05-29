@@ -98,13 +98,21 @@ Start, stop, restart, or check the status of all your Docker stacks in a single 
 ```
 
 ### 2. Backup State (`runtime-backup.sh`)
-Performs a hot backup of the entire `/runtime` folder, preserving timestamps and directory structures inside a gzipped tarball.
+Performs a hot backup of the entire `/runtime` folder, preserving timestamps and directory structures inside a gzipped tarball. It automatically retains a configurable number of old backups (default: 5) and deletes older ones.
+
 ```bash
-# Run a manual backup
+# Run a manual backup with default limit (5 backups)
 ./scripts/runtime-backup.sh
+
+# Keep a custom number of backups (e.g. 10)
+./scripts/runtime-backup.sh -n 10
+
+# Alternatively, using environment variable
+MAX_BACKUPS=10 ./scripts/runtime-backup.sh
 ```
 > [!NOTE]
-> Backups are saved in the `backup/` directory with a timestamp (e.g. `runtime_2026-05-29_16-15-27.tar.gz`). A symbolic link `latest.tar.gz` is automatically updated to point to the newest backup file.
+> Backups are saved in the `backup/` directory with a timestamp (e.g. `runtime_2026-05-29_16-15-27.tar.gz`). A symbolic link `latest.tar.gz` is automatically updated to point to the newest backup file. Rotation logic will ensure that only the most recent N timestamped backups are kept.
+
 
 ### 3. Restore / Bootstrap (`runtime-restore.sh`)
 Used to restore from a backup or instantiate a clean project from scratch.
