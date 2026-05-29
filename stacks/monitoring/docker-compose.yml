@@ -1,0 +1,24 @@
+services:
+
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ${ROOT}/runtime/influxdb/data:/var/lib/influxdb2
+      - ${ROOT}/runtime/influxdb/config:/etc/influxdb2
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ${ROOT}/runtime/grafana:/var/lib/grafana
