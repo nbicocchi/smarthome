@@ -1,0 +1,30 @@
+services:
+
+  dockge:
+    image: louislam/dockge:1
+    container_name: dockge
+    restart: unless-stopped
+
+    ports:
+      - "5001:5001"
+
+    environment:
+      - DOCKGE_STACKS_DIR=/workspace/stacks
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${ROOT}/runtime/dockge:/app/data
+      - ${ROOT}:/workspace
+
+  portainer:
+    image: portainer/portainer-ce:2.42.0-alpine
+    container_name: portainer
+    restart: unless-stopped
+
+    ports:
+      - "9000:9000"
+      - "9443:9443"
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${ROOT}/runtime/portainer:/data

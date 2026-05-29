@@ -4,10 +4,11 @@ mqtt:
   base_topic: zigbee2mqtt
   server: mqtt://mosquitto:1883
 serial:
-  port: tcp://192.168.1.131:6638
+  port: tcp://192.168.1.3:6638
   adapter: ember
 frontend:
   enabled: true
   port: 8080
 advanced:
   log_level: info
+version: 5
