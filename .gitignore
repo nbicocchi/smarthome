@@ -2,7 +2,7 @@
 runtime/
 
 # backups (optional but recommended)
-backups/
+backup/
 
 # logs
 **/log/

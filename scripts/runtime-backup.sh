@@ -4,9 +4,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BASE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-# Define our stacks
-STACKS=("iot" "network" "media" "proxy")
-BACKUP_DIR="$BASE_DIR/backups"
+BACKUP_DIR="$BASE_DIR/backup"
+RUNTIME_DIR="$BASE_DIR/runtime"
 
 TIMESTAMP="$(date +%Y-%m-%d_%H-%M-%S)"
 BACKUP_FILE="$BACKUP_DIR/runtime_$TIMESTAMP.tar.gz"
@@ -15,25 +14,16 @@ mkdir -p "$BACKUP_DIR"
 
 echo "📦 Starting runtime backup..."
 
-# Eseguiamo il backup dalla cartella base per percorsi relativi puliti
-cd "$BASE_DIR"
-
-# Raccogli le cartelle runtime esistenti
-RUNTIMES=()
-for stack in "${STACKS[@]}"; do
-  if [ -d "$stack/runtime" ]; then
-    RUNTIMES+=("$stack/runtime")
-  fi
-done
-
-if [ ${#RUNTIMES[@]} -eq 0 ]; then
-  echo "⚠️ No runtime folders found to backup!"
+if [ ! -d "$RUNTIME_DIR" ]; then
+  echo "⚠️ No runtime folder found to backup!"
   exit 0
 fi
 
-echo "🗜️ Archiving: ${RUNTIMES[*]}"
+echo "🗜️ Archiving: runtime"
 
-tar -czf "$BACKUP_FILE" "${RUNTIMES[@]}"
+# Eseguiamo il backup dalla cartella base per percorsi relativi puliti
+cd "$BASE_DIR"
+tar -czf "$BACKUP_FILE" "runtime"
 
 echo "✅ Backup created: $BACKUP_FILE"
 
