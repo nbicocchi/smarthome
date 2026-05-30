@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BASE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-STACKS=("iot" "management" "media" "monitoring" "proxy")
+STACKS=("iot" "management" "media" "observability" "homeassistant" "surveillance")
 
 usage() {
   echo "Usage: $0 {start|stop|restart|status}"

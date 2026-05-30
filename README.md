@@ -20,7 +20,7 @@ graph TD
 
     subgraph Data [Data Directories]
         runtime[(/runtime: Unified Container State)]
-        backup[(/backup: Gzipped Archive Backups)]
+        backup[(/backup: Zip Archive Backups)]
     end
 
     subgraph Scripts [Control Scripts /scripts]
@@ -30,7 +30,7 @@ graph TD
     end
 
     iot & monitoring & media & proxy & mgmt -->|Read/Write State| runtime
-    backup_sh -->|Tarball & Compress| runtime
+    backup_sh -->|Zip & Compress| runtime
     backup_sh -->|Store Archive| backup
     restore_sh -->|Safely Move Old & Extract| runtime
     restore_sh -->|Read Archive| backup
@@ -98,20 +98,20 @@ Start, stop, restart, or check the status of all your Docker stacks in a single 
 ```
 
 ### 2. Backup State (`runtime-backup.sh`)
-Performs a hot backup of the entire `/runtime` folder, preserving timestamps and directory structures inside a gzipped tarball. It automatically retains a configurable number of old backups (default: 5) and deletes older ones.
+Performs a hot backup of the entire `/runtime` folder, preserving directory structures inside a zip file. It automatically retains a configurable number of old backups (default: 5) and deletes older ones.
 
 ```bash
 # Run a manual backup with default limit (5 backups)
 ./scripts/runtime-backup.sh
 
 # Keep a custom number of backups (e.g. 10)
-./scripts/runtime-backup.sh -n 10
+./scripts/runtime-backup.sh 10
 
 # Alternatively, using environment variable
 MAX_BACKUPS=10 ./scripts/runtime-backup.sh
 ```
 > [!NOTE]
-> Backups are saved in the `backup/` directory with a timestamp (e.g. `runtime_2026-05-29_16-15-27.tar.gz`). A symbolic link `latest.tar.gz` is automatically updated to point to the newest backup file. Rotation logic will ensure that only the most recent N timestamped backups are kept.
+> Backups are saved in the `backup/` directory with a timestamp (e.g. `runtime_2026-05-29_16-15-27.zip`). A symbolic link `latest.zip` is automatically updated to point to the newest backup file. Rotation logic will ensure that only the most recent N timestamped backups are kept.
 
 
 ### 3. Restore / Bootstrap (`runtime-restore.sh`)
@@ -121,7 +121,7 @@ Used to restore from a backup or instantiate a clean project from scratch.
 ./scripts/runtime-restore.sh
 ```
 > [!IMPORTANT]
-> - If `backup/latest.tar.gz` exists: The script stops the docker services, renames your existing `runtime/` folder to `runtime_old_<timestamp>` to prevent data loss, extracts the backup, and restarts services.
+> - If `backup/latest.zip` exists: The script stops the docker services, renames your existing `runtime/` folder to `runtime_old_<timestamp>` to prevent data loss, extracts the backup, and restarts services.
 > - If no backup is found: The script initializes a clean state by copying default template configurations from stack-specific `base_config/` directories into the unified `runtime/` directory.
 
 ---

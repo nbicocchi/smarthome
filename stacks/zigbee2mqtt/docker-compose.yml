@@ -1,0 +1,24 @@
+services:
+
+  zigbee2mqtt:
+    image: ghcr.io/koenkk/zigbee2mqtt:2.10.0
+    container_name: zigbee2mqtt
+    restart: unless-stopped
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      - TZ=Europe/Rome
+
+    volumes:
+      - ${ROOT}/runtime/zigbee2mqtt:/app/data
+
+    networks:
+      - mqtt-net
+
+networks:
+  mqtt-net:
+    external: true
+
+      

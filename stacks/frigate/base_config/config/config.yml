@@ -1,0 +1,14 @@
+mqtt:
+  host: mosquitto
+
+detectors:
+  cpu1:
+    type: cpu
+
+cameras:
+  dummy_camera:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/none
+          roles:
+            - detect

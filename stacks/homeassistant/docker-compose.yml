@@ -1,0 +1,16 @@
+services:
+
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:2026.5
+    container_name: homeassistant
+    restart: unless-stopped
+
+    ports:
+      - "8123:8123"
+
+    environment:
+      - TZ=Europe/Rome
+
+    volumes:
+      - ${ROOT}/runtime/homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro

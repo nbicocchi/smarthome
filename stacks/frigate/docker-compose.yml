@@ -1,0 +1,24 @@
+# Docker Compose definition for the Frigate stack
+services:
+  frigate:
+    image: blakeblackshear/frigate:0.11.1
+    container_name: frigate
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+    ports:
+      - "5000:5000"   # UI
+      - "1935:1935"   # RTMP stream
+    volumes:
+      - ${ROOT}/runtime/frigate/config:/config
+      - ${ROOT}/runtime/frigate/media:/media
+      - /etc/localtime:/etc/localtime:ro
+
+    networks:
+      - mqtt-net
+
+networks:
+  mqtt-net:
+    external: true
+
+      
