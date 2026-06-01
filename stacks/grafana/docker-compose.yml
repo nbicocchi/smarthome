@@ -1,0 +1,14 @@
+services:
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+
+    user: ${USER}:${GROUP}
+
+    ports:
+      - "3000:3000"
+    
+    volumes:
+      - ${ROOT}/runtime/grafana:/var/lib/grafana

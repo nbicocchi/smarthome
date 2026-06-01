@@ -14,15 +14,3 @@ services:
       - ${ROOT}/runtime/influxdb/data:/var/lib/influxdb2
       - ${ROOT}/runtime/influxdb/config:/etc/influxdb2
 
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    restart: unless-stopped
-
-    user: ${USER}:${GROUP}
-
-    ports:
-      - "3000:3000"
-    
-    volumes:
-      - ${ROOT}/runtime/grafana:/var/lib/grafana
