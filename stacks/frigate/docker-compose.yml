@@ -4,11 +4,13 @@ services:
     image: blakeblackshear/frigate:0.11.1
     container_name: frigate
     restart: unless-stopped
-    environment:
-      - TZ=${TZ}
+
+    user: ${USER}:${GROUP}
+
     ports:
       - "5000:5000"   # UI
       - "1935:1935"   # RTMP stream
+    
     volumes:
       - ${ROOT}/runtime/frigate/config:/config
       - ${ROOT}/runtime/frigate/media:/media

@@ -5,11 +5,10 @@ services:
     container_name: homeassistant
     restart: unless-stopped
 
+    user: ${USER}:${GROUP}
+
     ports:
       - "8123:8123"
-
-    environment:
-      - TZ=Europe/Rome
 
     volumes:
       - ${ROOT}/runtime/homeassistant:/config
