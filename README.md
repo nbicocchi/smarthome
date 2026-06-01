@@ -1,7 +1,3 @@
-Here is a clean minimal **README in English** based on your steps:
-
----
-
 # Home Infrastructure Setup (Docker Stacks)
 
 This document describes the minimal steps required to initialize and run the full Docker-based home infrastructure.
@@ -50,7 +46,30 @@ Run this inside each stack directory.
 
 ---
 
-## 4. Copy Base Configuration
+## 4. Configure Shared Storage
+
+Create a symbolic link from the project's local `media` directory to the physical storage location used by services such as Jellyfin, Frigate, and other media-related applications.
+
+Example:
+
+```bash
+ln -s /mnt/storage/media media
+```
+
+Result:
+
+```text
+project/
+├── media -> /mnt/storage/media
+├── stacks/
+└── scripts/
+```
+
+This allows all containers to access the same persistent media storage while keeping the project structure clean and portable.
+
+---
+
+## 5. Copy Base Configuration
 
 Copy base configuration files into the runtime directory:
 
@@ -66,10 +85,12 @@ cp -r base_config/* runtime/
 
 ---
 
-## Notes
+## 6. Start the Infrastructure
 
-* Ensure `mqtt-net` exists before starting services
-* Always verify ownership using `USER:GROUP` defined in `.env`
-* First run is required to generate runtime directories
-* Configuration files must be placed before final startup
+Once the configuration has been copied and storage has been configured, start all stacks:
 
+```bash
+docker compose up -d
+```
+
+Verify that all services are running correctly before proceeding with further configuration.
