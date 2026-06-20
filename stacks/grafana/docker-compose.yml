@@ -12,3 +12,10 @@ services:
     
     volumes:
       - ${ROOT}/runtime/grafana:/var/lib/grafana
+
+    networks:
+      - mqtt-net
+
+networks:
+  mqtt-net:
+    external: true

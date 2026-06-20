@@ -17,14 +17,12 @@ services:
       - ${ROOT}/runtime/frigate/media:/media
       - /etc/localtime:/etc/localtime:ro
 
-    networks:
-      - mqtt-net
-
     devices:
       - /dev/dri:/dev/dri
+
+    networks:
+      - mqtt-net
 
 networks:
   mqtt-net:
     external: true
-
-      
