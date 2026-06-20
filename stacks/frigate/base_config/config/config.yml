@@ -39,6 +39,9 @@ cameras:
         - dog
         - cat
 
+    record:
+      enabled: true
+
 record:
   enabled: true
   retain:
@@ -46,3 +49,5 @@ record:
   events:
     retain:
       default: 7
+
+version: 0.14
