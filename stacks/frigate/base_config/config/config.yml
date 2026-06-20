@@ -11,8 +11,25 @@ go2rtc:
     tapo_main: rtsp://nicola:episteme@192.168.1.158:554/stream1
     tapo_sub: rtsp://nicola:episteme@192.168.1.158:554/stream2
 
-ffmpeg:
-  hwaccel_args: preset-intel-vaapi
+record:
+  enabled: true
+  detections:
+    pre_capture: 5
+    post_capture: 5
+    retain:
+      days: 7
+      mode: motion
+
+snapshots:
+  enabled: true
+
+objects:
+  track:
+    - person
+    - car
+    - truck
+    - dog
+    - cat
 
 cameras:
   tapo_c210:
@@ -27,31 +44,9 @@ cameras:
             - record
 
     detect:
-      width: 1920
-      height: 1080
+      enabled: true
+      width: 1280
+      height: 720
       fps: 5
 
-    objects:
-      track:
-        - person
-        - car
-        - truck
-        - bus
-        - motorcycle
-        - dog
-        - cat
-
-    record:
-      enabled: true
-      retain:
-        days: 1
-
-record:
-  enabled: true
-  retain:
-    days: 1
-  events:
-    retain:
-      default: 7
-
-version: 0.14
+version: 0.17-0
