@@ -1,5 +1,6 @@
 mqtt:
   host: mosquitto
+  topic_prefix: frigate
 
 detectors:
   cpu1:
