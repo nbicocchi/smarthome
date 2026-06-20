@@ -3,9 +3,9 @@ mqtt:
   topic_prefix: frigate
 
 detectors:
-  cpu1:
+  cpu:
     type: cpu
-
+    
 go2rtc:
   streams:
     tapo_main: rtsp://nicola:episteme@192.168.1.158:554/stream1
@@ -34,6 +34,7 @@ objects:
 cameras:
   tapo_c210:
     ffmpeg:
+      hwaccel_args: preset-vaapi
       inputs:
         - path: rtsp://127.0.0.1:8554/tapo_sub
           roles:
@@ -45,8 +46,8 @@ cameras:
 
     detect:
       enabled: true
-      width: 1280
-      height: 720
-      fps: 5
+      width: 640
+      height: 360
+      fps: 3
 
 version: 0.17-0
