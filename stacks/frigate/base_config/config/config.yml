@@ -5,10 +5,24 @@ detectors:
   cpu1:
     type: cpu
 
+go2rtc:
+  streams:
+    tapo_main: rtsp://nicola:episteme@192.168.1.158:554/stream1
+    tapo_sub: rtsp://nicola:episteme@192.168.1.158:554/stream2
+
 cameras:
-  dummy_camera:
+  tapo_c210:
     ffmpeg:
       inputs:
-        - path: rtsp://127.0.0.1:8554/none
+        - path: rtsp://127.0.0.1:8554/tapo_sub
           roles:
             - detect
+
+        - path: rtsp://127.0.0.1:8554/tapo_main
+          roles:
+            - record
+
+    detect:
+      width: 1920
+      height: 1080
+      fps: 5
