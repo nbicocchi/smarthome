@@ -5,7 +5,7 @@ services:
     container_name: homeassistant
     restart: unless-stopped
 
-    user: ${USER}:${GROUP}
+    #user: ${USER}:${GROUP}
 
     ports:
       - "8123:8123"
