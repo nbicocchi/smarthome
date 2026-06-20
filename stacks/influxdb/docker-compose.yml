@@ -10,7 +10,20 @@ services:
     ports:
       - "8086:8086"
 
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=adminpassword
+      - DOCKER_INFLUXDB_INIT_ORG=home
+      - DOCKER_INFLUXDB_INIT_BUCKET=homeassistant
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=super-secret-token
+
     volumes:
       - ${ROOT}/runtime/influxdb/data:/var/lib/influxdb2
-      - ${ROOT}/runtime/influxdb/config:/etc/influxdb2
 
+    networks:
+      - mqtt-net
+
+networks:
+  mqtt-net:
+    external: true
