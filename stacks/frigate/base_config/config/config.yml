@@ -13,12 +13,16 @@ go2rtc:
 cameras:
   tapo_c210:
     ffmpeg:
+      hwaccel_args: preset-intel-vaapi
+
       inputs:
         - path: rtsp://127.0.0.1:8554/tapo_sub
-          roles: [detect]
+          roles:
+            - detect
 
         - path: rtsp://127.0.0.1:8554/tapo_main
-          roles: [record]
+          roles:
+            - record
 
     detect:
       width: 1920

@@ -20,6 +20,9 @@ services:
     networks:
       - mqtt-net
 
+    devices:
+      - /dev/dri:/dev/dri
+
 networks:
   mqtt-net:
     external: true
