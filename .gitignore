@@ -1,3 +1,6 @@
+# media (NEVER commit)
+media/
+
 # runtime state (NEVER commit)
 runtime/
 
