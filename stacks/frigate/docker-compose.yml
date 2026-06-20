@@ -5,7 +5,7 @@ services:
     container_name: frigate
     restart: unless-stopped
 
-    user: ${USER}:${GROUP}
+    #user: ${USER}:${GROUP}
 
     ports:
       - "5000:5000"   # UI
