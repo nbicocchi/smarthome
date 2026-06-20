@@ -15,14 +15,30 @@ cameras:
     ffmpeg:
       inputs:
         - path: rtsp://127.0.0.1:8554/tapo_sub
-          roles:
-            - detect
+          roles: [detect]
 
         - path: rtsp://127.0.0.1:8554/tapo_main
-          roles:
-            - record
+          roles: [record]
 
     detect:
       width: 1920
       height: 1080
       fps: 5
+
+    objects:
+      track:
+        - person
+        - car
+        - truck
+        - bus
+        - motorcycle
+        - dog
+        - cat
+
+record:
+  enabled: true
+  retain:
+    days: 1
+  events:
+    retain:
+      default: 7
