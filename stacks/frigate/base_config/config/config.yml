@@ -10,11 +10,12 @@ go2rtc:
     tapo_main: rtsp://nicola:episteme@192.168.1.158:554/stream1
     tapo_sub: rtsp://nicola:episteme@192.168.1.158:554/stream2
 
+ffmpeg:
+  hwaccel_args: preset-intel-vaapi
+
 cameras:
   tapo_c210:
     ffmpeg:
-      hwaccel_args: preset-intel-vaapi
-
       inputs:
         - path: rtsp://127.0.0.1:8554/tapo_sub
           roles:
@@ -41,6 +42,8 @@ cameras:
 
     record:
       enabled: true
+      retain:
+        days: 1
 
 record:
   enabled: true
@@ -49,3 +52,5 @@ record:
   events:
     retain:
       default: 7
+
+version: 0.14
