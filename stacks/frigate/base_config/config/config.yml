@@ -3,8 +3,17 @@ mqtt:
   topic_prefix: frigate
 
 detectors:
-  cpu:
-    type: cpu
+  ov:
+    type: openvino
+    device: CPU
+
+model:
+  width: 300
+  height: 300
+  input_tensor: nhwc
+  input_pixel_format: bgr
+  path: /openvino-model/ssdlite_mobilenet_v2.xml
+  labelmap_path: /openvino-model/coco_91cl_bkgr.txt
     
 go2rtc:
   streams:
@@ -48,6 +57,6 @@ cameras:
       enabled: true
       width: 640
       height: 360
-      fps: 3
+      fps: 5
 
 version: 0.17-0
