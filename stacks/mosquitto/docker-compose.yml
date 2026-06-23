@@ -14,7 +14,6 @@ services:
     volumes:
       - ${ROOT}/runtime/mosquitto/config:/mosquitto/config
       - ${ROOT}/runtime/mosquitto/data:/mosquitto/data
-      - ${ROOT}/runtime/mosquitto/log:/mosquitto/log
 
     networks:
       - mqtt-net
