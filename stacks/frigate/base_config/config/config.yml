@@ -14,20 +14,20 @@ model:
   input_pixel_format: bgr
   path: /openvino-model/ssdlite_mobilenet_v2.xml
   labelmap_path: /openvino-model/coco_91cl_bkgr.txt
-    
+
 go2rtc:
   streams:
-    tapo_main: rtsp://nicola:episteme@192.168.1.158:554/stream1
-    tapo_sub: rtsp://nicola:episteme@192.168.1.158:554/stream2
+    annke_main: rtsp://admin:C%24utg04bkqD-L4O@192.168.1.103:554/Streaming/Channels/101
+    annke_sub: rtsp://admin:C%24utg04bkqD-L4O@192.168.1.103:554/Streaming/Channels/102
 
 record:
   enabled: true
-  detections:
+  retain:
+    days: 7
+    mode: motion
+  events:
     pre_capture: 5
     post_capture: 5
-    retain:
-      days: 7
-      mode: motion
 
 snapshots:
   enabled: true
@@ -39,24 +39,38 @@ objects:
     - truck
     - dog
     - cat
+  filters:
+    person:
+      threshold: 0.45
+    car:
+      threshold: 0.5
+    dog:
+      threshold: 0.5
+    cat:
+      threshold: 0.5
+
+motion:
+  threshold: 35
+  contour_area: 20
+  improve_contrast: true
 
 cameras:
-  tapo_c210:
+  annke:
     ffmpeg:
       hwaccel_args: preset-vaapi
       inputs:
-        - path: rtsp://127.0.0.1:8554/tapo_sub
+        - path: rtsp://127.0.0.1:8554/annke_sub
           roles:
             - detect
 
-        - path: rtsp://127.0.0.1:8554/tapo_main
+        - path: rtsp://127.0.0.1:8554/annke_main
           roles:
             - record
 
     detect:
       enabled: true
       width: 640
-      height: 360
-      fps: 5
+      height: 640
+      fps: 10
 
 version: 0.17-0
