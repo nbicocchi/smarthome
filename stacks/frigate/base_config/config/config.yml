@@ -17,44 +17,41 @@ model:
 
 go2rtc:
   streams:
-    annke_main: rtsp://admin:C%24utg04bkqD-L4O@192.168.1.103:554/Streaming/Channels/101
-    annke_sub: rtsp://admin:C%24utg04bkqD-L4O@192.168.1.103:554/Streaming/Channels/102
+    #tapo_main: rtsp://nicola:episteme@192.168.1.158:554/stream1
+    #tapo_sub: rtsp://nicola:episteme@192.168.1.158:554/stream2
+
+    annke_main: 
+      rtsp://admin:C%24utg04bkqD-L4O@192.168.1.103:554/Streaming/Channels/101
+    annke_sub: 
+      rtsp://admin:C%24utg04bkqD-L4O@192.168.1.103:554/Streaming/Channels/102
 
 record:
   enabled: true
-  retain:
-    days: 7
-    mode: motion
-  events:
-    pre_capture: 5
-    post_capture: 5
-
-snapshots:
-  enabled: true
+  continuous:
+    days: 0
+  detections:
+    pre_capture: 10
+    post_capture: 10
+    retain:
+      days: 7
+      mode: motion
+  alerts:
+    pre_capture: 10
+    post_capture: 10
+    retain:
+      days: 7
+      mode: motion
 
 objects:
   track:
     - person
-    - car
-    - truck
     - dog
     - cat
-  filters:
-    person:
-      threshold: 0.45
-    car:
-      threshold: 0.5
-    dog:
-      threshold: 0.5
-    cat:
-      threshold: 0.5
-
-motion:
-  threshold: 35
-  contour_area: 20
-  improve_contrast: true
+    - car
+    - truck
 
 cameras:
+
   annke:
     ffmpeg:
       hwaccel_args: preset-vaapi
@@ -67,10 +64,37 @@ cameras:
           roles:
             - record
 
+    motion:
+      threshold: 20
+      contour_area: 20
+      improve_contrast: true
+      mask: 0,0.533,1,0.5,1,0,0,0
+    
     detect:
       enabled: true
-      width: 640
-      height: 640
+      width: 960
+      height: 432
       fps: 10
+
+    zones:
+      garden:
+        coordinates: 0,0.557,1,0.528,1,1,0,1
+        loitering_time: 0
+        friendly_name: Garden
+        inertia: 3
+
+    review:
+      alerts:
+        required_zones: garden
+        labels:
+          - person
+          - car
+          - truck
+
+      detections:
+        required_zones: garden
+        labels:
+          - cat
+          - dog
 
 version: 0.17-0
