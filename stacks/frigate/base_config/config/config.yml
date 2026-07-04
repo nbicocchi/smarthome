@@ -16,39 +16,49 @@ model:
   labelmap_path: /openvino-model/coco_91cl_bkgr.txt
 
 go2rtc:
+  rtsp:
+    listen: ":8554"
+
   streams:
     #tapo_main: rtsp://nicola:episteme@192.168.1.158:554/stream1
     #tapo_sub: rtsp://nicola:episteme@192.168.1.158:554/stream2
 
-    annke_main: 
-      rtsp://admin:C%24utg04bkqD-L4O@192.168.1.103:554/Streaming/Channels/101
-    annke_sub: 
-      rtsp://admin:C%24utg04bkqD-L4O@192.168.1.103:554/Streaming/Channels/102
+    annke_main: rtsp://admin:C%24utg04bkqD-L4O@192.168.1.103:554/Streaming/Channels/101
+    annke_sub: rtsp://admin:C%24utg04bkqD-L4O@192.168.1.103:554/Streaming/Channels/102
 
 record:
   enabled: true
   continuous:
     days: 0
-  detections:
-    pre_capture: 10
-    post_capture: 10
-    retain:
-      days: 7
-      mode: motion
+  preview:
+    # Optional: Quality of recording preview (default: shown below).
+    # Options are: very_low, low, medium, high, very_high
+    quality: medium
   alerts:
-    pre_capture: 10
-    post_capture: 10
+    pre_capture: 5
+    post_capture: 5
     retain:
       days: 7
-      mode: motion
+      mode: active_objects
+  detections:
+    pre_capture: 5
+    post_capture: 5
+    retain:
+      days: 7
+      mode: all
+
+snapshots:
+  enabled: True
+  retain:
+    default: 7
 
 objects:
   track:
     - person
-    - dog
-    - cat
     - car
     - truck
+    - motorcycle
+    - bus
 
 cameras:
 
@@ -82,19 +92,5 @@ cameras:
         loitering_time: 0
         friendly_name: Garden
         inertia: 3
-
-    review:
-      alerts:
-        required_zones: garden
-        labels:
-          - person
-          - car
-          - truck
-
-      detections:
-        required_zones: garden
-        labels:
-          - cat
-          - dog
 
 version: 0.17-0
