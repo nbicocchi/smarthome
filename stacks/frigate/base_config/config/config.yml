@@ -7,24 +7,32 @@ detectors:
     type: openvino
     device: CPU
 
+#model:
+#  width: 300
+#  height: 300
+#  input_tensor: nhwc
+#  input_pixel_format: bgr
+#  path: /openvino-model/ssdlite_mobilenet_v2.xml
+#  labelmap_path: /openvino-model/coco_91cl_bkgr.txt
+
 model:
-  width: 300
-  height: 300
-  input_tensor: nhwc
-  input_pixel_format: bgr
-  path: /openvino-model/ssdlite_mobilenet_v2.xml
-  labelmap_path: /openvino-model/coco_91cl_bkgr.txt
+  model_type: yolo-generic
+  width: 320 # <--- should match the imgsize set during model export
+  height: 320 # <--- should match the imgsize set during model export
+  input_tensor: nchw
+  input_dtype: float
+  path: /config/model_cache/yolov9-s-320.onnx
+  labelmap_path: /labelmap/coco-80.txt
 
 go2rtc:
-  rtsp:
-    listen: ":8554"
-
   streams:
     #tapo_main: rtsp://nicola:episteme@192.168.1.158:554/stream1
     #tapo_sub: rtsp://nicola:episteme@192.168.1.158:554/stream2
 
-    annke_main: rtsp://admin:C%24utg04bkqD-L4O@192.168.1.103:554/Streaming/Channels/101
-    annke_sub: rtsp://admin:C%24utg04bkqD-L4O@192.168.1.103:554/Streaming/Channels/102
+    annke_main: 
+      rtsp://admin:C%24utg04bkqD-L4O@192.168.1.103:554/Streaming/Channels/101
+    annke_sub: 
+      rtsp://admin:C%24utg04bkqD-L4O@192.168.1.103:554/Streaming/Channels/102
 
 record:
   enabled: true
@@ -33,7 +41,7 @@ record:
   preview:
     # Optional: Quality of recording preview (default: shown below).
     # Options are: very_low, low, medium, high, very_high
-    quality: medium
+    quality: very_high
   alerts:
     pre_capture: 5
     post_capture: 5
@@ -48,7 +56,7 @@ record:
       mode: all
 
 snapshots:
-  enabled: True
+  enabled: true
   retain:
     default: 7
 
@@ -78,19 +86,19 @@ cameras:
       threshold: 20
       contour_area: 20
       improve_contrast: true
-      mask: 0,0.533,1,0.5,1,0,0,0
-    
-    detect:
-      enabled: true
-      width: 960
-      height: 432
-      fps: 10
+      mask: 0,0,1,0,1,0.595,0,0.622
 
     zones:
       garden:
-        coordinates: 0,0.557,1,0.528,1,1,0,1
+        coordinates: 0,0.637,1,0.609,1,1,0,1
         loitering_time: 0
         friendly_name: Garden
         inertia: 3
+
+    detect:
+      enabled: true
+      width: 1200
+      height: 536
+      fps: 10
 
 version: 0.17-0
