@@ -1,0 +1,106 @@
+- sensor:
+    # Hybrid inverter
+    - name: "ASW3000H-S2 AC Power"
+      unique_id: asw3000h_s2_pac
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+      state: >
+        {% set inv = state_attr('sensor.asw3000h_s2_inverter_raw', 'inv') %}
+        {{ inv[0].pac | float(0) if inv else 0 }}
+
+    - name: "ASW3000H-S2 Energy Today"
+      unique_id: asw3000h_s2_etd
+      unit_of_measurement: "kWh"
+      device_class: energy
+      state_class: total_increasing
+      state: >
+        {% set inv = state_attr('sensor.asw3000h_s2_inverter_raw', 'inv') %}
+        {{ (inv[0].etd | float(0) / 10) if inv else 0 }}
+
+    - name: "ASW3000H-S2 Energy Total"
+      unique_id: asw3000h_s2_eto
+      unit_of_measurement: "kWh"
+      device_class: energy
+      state_class: total_increasing
+      state: >
+        {% set inv = state_attr('sensor.asw3000h_s2_inverter_raw', 'inv') %}
+        {{ (inv[0].eto | float(0) / 10) if inv else 0 }}
+
+    # String inverter
+    - name: "ASW3000-S-G2 AC Power"
+      unique_id: asw3000_s_g2_pac
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+      state: >
+        {% set inv = state_attr('sensor.asw3000_s_g2_inverter_raw', 'inv') %}
+        {{ inv[0].pac | float(0) if inv else 0 }}
+
+    - name: "ASW3000-S-G2 Energy Today"
+      unique_id: asw3000_s_g2_etd
+      unit_of_measurement: "kWh"
+      device_class: energy
+      state_class: total_increasing
+      state: >
+        {% set inv = state_attr('sensor.asw3000_s_g2_inverter_raw', 'inv') %}
+        {{ (inv[0].etd | float(0) / 10) if inv else 0 }}
+
+    - name: "ASW3000-S-G2 Energy Total"
+      unique_id: asw3000_s_g2_eto
+      unit_of_measurement: "kWh"
+      device_class: energy
+      state_class: total_increasing
+      state: >
+        {% set inv = state_attr('sensor.asw3000_s_g2_inverter_raw', 'inv') %}
+        {{ (inv[0].eto | float(0) / 10) if inv else 0 }}
+
+    # Other stuff
+    - name: "Power Home"
+      unique_id: power_home
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+      state: >
+        {% set i1 = states('sensor.asw3000h_s2_ac_power') | float(0) %}
+        {% set i2 = states('sensor.asw3000_s_g2_ac_power') | float(0) %}
+        {% set grid = states('sensor.power_grid') | float(0) %}
+        {{ [0, (i1 + i2 + grid)] | max | round(0) }}
+
+    - name: "Power Solar"
+      unique_id: power_solar
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+      state: >
+        {% set i1 = states('sensor.asw3000h_s2_ac_power') | float(0) %}
+        {% set i2 = states('sensor.asw3000_s_g2_ac_power') | float(0) %}
+        {{ (i1 + i2) | round(0) }}
+
+    - name: "Power Grid"
+      unique_id: power_grid
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+      state: >
+        {% set val = state_attr('sensor.asw3000h_s2_meter_raw', 'meter_pac') %}
+        {{ val | float(0) | round(0) }}
+        
+    - name: "Power Grid Import"
+      unique_id: power_grid_import
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+      state: >
+        {% set val = state_attr('sensor.asw3000h_s2_meter_raw', 'meter_pac') %}
+        {{ [0, val | float(0)] | max | round(0) }}
+
+    - name: "Power Grid Export"
+      unique_id: power_grid_export
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+      state: >
+        {% set val = state_attr('sensor.asw3000h_s2_meter_raw', 'meter_pac') %}
+        {{ [0, -(val | float(0))] | max | round(0) }}
+

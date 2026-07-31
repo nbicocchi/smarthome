@@ -1,0 +1,29 @@
+api_version: 2
+host: influxdb
+port: 8086
+token: super-secret-token
+organization: home
+bucket: homeassistant
+include:
+  entities:
+    - sensor.roof_sensor_temperature
+    - sensor.first_floor_sensor_temperature
+    - sensor.garden_sensor_temperature
+    - sensor.ground_floor_sensor_temperature
+    - sensor.roof_sensor_humidity
+    - sensor.first_floor_sensor_humidity
+    - sensor.garden_sensor_humidity
+    - sensor.ground_floor_sensor_humidity
+    - sensor.office_deco_total_down
+    - sensor.office_deco_total_up
+    - sensor.light_sensor_illuminance
+    - sensor.power_solar
+    - sensor.power_home
+    - sensor.power_grid
+    - sensor.energy_home
+    - sensor.energy_solar
+    - sensor.energy_grid_import
+    - sensor.energy_grid_export
+    
+    
+    

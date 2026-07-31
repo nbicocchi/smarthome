@@ -1,0 +1,15 @@
+- platform: history_stats
+  name: Time temperature in range 24h
+  entity_id: binary_sensor.temperature_in_range
+  state: "on"
+  type: time
+  start: "{{ now() - timedelta(hours=24) }}"
+  end: "{{ now() }}"
+
+- platform: history_stats
+  name: Time heater on 24h
+  entity_id: binary_sensor.heater_on
+  state: "on"
+  type: time
+  start: "{{ now() - timedelta(hours=24) }}"
+  end: "{{ now() }}"

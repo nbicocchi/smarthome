@@ -1,0 +1,17 @@
+default_config:
+
+frontend:
+  themes: !include_dir_merge_named themes
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+command_line: !include config/command_line.yaml
+template: !include_dir_merge_list config/templates
+sensor: !include_dir_merge_list config/sensors
+influxdb: !include config/influxdb.yaml
+counter: !include config/counters.yaml
+light: !include config/lights.yaml
+group: !include config/groups.yaml
+climate: !include config/climate.yaml
+input_select: !include config/input_select.yaml

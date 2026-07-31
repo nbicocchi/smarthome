@@ -1,0 +1,414 @@
+- id: '1780691225145'
+  alias: Lights - bedtime
+  description: ''
+  triggers:
+  - trigger: time
+    at: '22:15:00'
+  conditions: []
+  actions:
+  - action: script.turn_on
+    metadata: {}
+    target:
+      entity_id: script.home_bedtime
+    data: {}
+  mode: single
+- id: '1782311824634'
+  alias: Knob - single click
+  description: ''
+  triggers:
+  - trigger: mqtt
+    options:
+      topic: zigbee2mqtt/Physical knob/action
+      payload: single
+  actions: []
+- id: '1782312884447'
+  alias: Knob - double click
+  description: ''
+  triggers:
+  - trigger: mqtt
+    options:
+      topic: zigbee2mqtt/Physical knob/action
+      payload: double
+  conditions: []
+  actions: []
+  mode: single
+- id: '1782313215704'
+  alias: Knob - rotate left
+  description: ''
+  triggers:
+  - trigger: mqtt
+    options:
+      topic: zigbee2mqtt/Physical knob/action
+      payload: rotate_left
+  conditions: []
+  actions: []
+  mode: single
+- id: '1782314344551'
+  alias: Alarmo - trigger pir (night)
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.pir_all
+    to:
+    - 'on'
+  conditions:
+  - condition: state
+    entity_id: alarm_control_panel.alarmo
+    state:
+    - armed_night
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    target:
+      entity_id: light.red_lights
+    data:
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      brightness_pct: 50
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - action: light.turn_off
+    metadata: {}
+    target:
+      entity_id: light.red_lights
+    data: {}
+  mode: restart
+- id: '1782396257680'
+  alias: Alarmo - arm away (home looks empty)
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - person.nicola_bicocchi
+    - person.marzia_risi
+    to: not_home
+    for:
+      minutes: 30
+  - trigger: state
+    entity_id:
+    - binary_sensor.pir_all
+    to:
+    - 'off'
+    for:
+      hours: 0
+      minutes: 30
+      seconds: 0
+  conditions:
+  - condition: state
+    entity_id: person.nicola_bicocchi
+    state: not_home
+    for:
+      minutes: 30
+  - condition: state
+    entity_id: person.marzia_risi
+    state: not_home
+    for:
+      minutes: 30
+  - condition: state
+    entity_id: binary_sensor.pir_all
+    state:
+    - 'off'
+    for:
+      hours: 0
+      minutes: 30
+      seconds: 0
+  - condition: state
+    entity_id: alarm_control_panel.alarmo
+    state:
+    - armed_home
+    - armed_night
+    - disarmed
+  actions:
+  - action: alarm_control_panel.alarm_arm_away
+    target:
+      entity_id: alarm_control_panel.alarmo
+  - action: notify.notify
+    data:
+      title: Alarmo
+      message: Auto armed (empty house)
+  mode: single
+- id: '1782468265372'
+  alias: Alarmo - trigger pir (away)
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.pir_confirmed_motion
+    to:
+    - 'on'
+  conditions:
+  - condition: state
+    entity_id: alarm_control_panel.alarmo
+    state: armed_away
+  actions:
+  - action: notify.notify
+    data:
+      title: "\U0001F4F7 Presence sensor (all PIRs)"
+      message: Activity detected in the house while armed away!
+  mode: single
+- id: '1782689779297'
+  alias: Alarmo - arm home (someone comes back)
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - person.nicola_bicocchi
+    - person.marzia_risi
+    to: home
+  conditions:
+  - condition: state
+    entity_id: alarm_control_panel.alarmo
+    state: armed_away
+  actions:
+  - action: alarm_control_panel.alarm_arm_home
+    metadata: {}
+    target:
+      entity_id: alarm_control_panel.alarmo
+    data: {}
+  - action: notify.notify
+    data:
+      title: Alarmo
+      message: Auto disarmed
+  mode: single
+- id: '1783528089209'
+  alias: Alarmo - trigger camera (home, night, away)
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.annke_review_status
+    to: ALERT
+  conditions:
+  - condition: state
+    entity_id: alarm_control_panel.alarmo
+    state:
+    - armed_away
+    - armed_night
+    - armed_home
+  actions:
+  - action: notify.notify
+    data:
+      title: "\U0001F4F7 Front Camera"
+      message: Activity detected
+  mode: single
+- id: '1784049262902'
+  alias: Lights - sleep
+  description: ''
+  triggers:
+  - trigger: time
+    at: 02:00:00
+  conditions: []
+  actions:
+  - action: script.turn_on
+    metadata: {}
+    target:
+      entity_id:
+      - script.home_off
+      - script.garden_off
+    data: {}
+  mode: single
+- id: '1784117377964'
+  alias: Lights - sunset
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.light_sensor_illuminance
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    below: 700
+  conditions:
+  - condition: sun
+    before: sunset
+    after: sunset
+    after_offset:
+      hours: -3
+      minutes: 0
+      seconds: 0
+  actions:
+  - action: script.turn_on
+    metadata: {}
+    target:
+      entity_id:
+      - script.home_soft
+      - script.garden_soft
+    data: {}
+  mode: single
+- id: '1784138757054'
+  alias: Alarmo - arm home (after night)
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunrise
+    offset: 0
+  conditions: []
+  actions:
+  - action: script.alarmo_toggle_night_to_home
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1785000881155'
+  alias: Well pump - reminder
+  description: ''
+  triggers:
+  - trigger: time_pattern
+    minutes: /15
+  conditions:
+  - condition: state
+    entity_id: switch.well_pump_switch
+    state:
+    - 'on'
+  actions:
+  - action: notify.notify
+    metadata: {}
+    data:
+      title: 'Irrigation '
+      message: Irrigation still running...
+  mode: single
+- id: '1785012950939'
+  alias: Well pump - auto on (irrigation)
+  description: ''
+  triggers:
+  - trigger: time
+    at: '13:01:00'
+  conditions: []
+  actions:
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.well_pump_switch
+  - action: notify.notify
+    metadata: {}
+    data:
+      title: Irrigation
+      message: Irrigation started
+  mode: single
+- id: '1785013078110'
+  alias: Well pump - auto off (irrigation)
+  description: ''
+  triggers:
+  - trigger: time
+    at: '13:59:00'
+  conditions: []
+  actions:
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.well_pump_switch
+  - action: notify.notify
+    metadata: {}
+    data:
+      title: 'Irrigation '
+      message: Irrigation ended
+  mode: single
+- id: '1785015944438'
+  alias: Knob - rotate right
+  description: ''
+  triggers:
+  - trigger: mqtt
+    options:
+      topic: zigbee2mqtt/Physical knob/action
+      payload: rotate_right
+  conditions: []
+  actions: []
+  mode: single
+- id: '1785016061457'
+  alias: Aquarium pump - turn on (morning)
+  description: ''
+  triggers:
+  - trigger: time
+    at: 08:00:00
+  conditions: []
+  actions:
+  - action: switch.turn_on
+    metadata: {}
+    target:
+      entity_id: switch.acquarium_pump_switch
+    data: {}
+  mode: single
+- id: '1785016288275'
+  alias: Aquarium pump - turn off (evening)
+  description: ''
+  triggers:
+  - trigger: time
+    at: '20:00:00'
+  conditions: []
+  actions:
+  - action: switch.turn_off
+    metadata: {}
+    target:
+      entity_id: switch.acquarium_pump_switch
+    data: {}
+  mode: single
+- id: '1785016710621'
+  alias: Alarm - arm night (before night)
+  description: ''
+  triggers:
+  - trigger: time
+    at: 02:00:00
+  conditions: []
+  actions:
+  - action: script.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: script.alarmo_toggle_home_to_night
+  mode: single
+- id: '1785219725609'
+  alias: Lights - sunrise
+  description: ''
+  triggers:
+  - trigger: sun.sunrise
+    options: {}
+  conditions: []
+  actions:
+  - action: script.turn_on
+    metadata: {}
+    target:
+      entity_id:
+      - script.garden_off
+      - script.home_off
+    data: {}
+  mode: single
+- id: '1785281663953'
+  alias: Heater - increment daily cycles
+  description: ''
+  triggers:
+  - trigger: switch.turned_on
+    target:
+      entity_id: switch.heater_switch
+    options:
+      behavior: each
+      for: 00:00:00
+  conditions: []
+  actions:
+  - action: counter.increment
+    metadata: {}
+    target:
+      entity_id: counter.heater_start_count_24h
+    data: {}
+  mode: single
+- id: '1785439809293'
+  alias: Heater - reset daily cycles
+  description: ''
+  triggers:
+  - trigger: time
+    at: 00:00:00
+  conditions: []
+  actions:
+  - action: counter.reset
+    metadata: {}
+    target:
+      entity_id: counter.heater_start_count_24h
+    data: {}
+  mode: single

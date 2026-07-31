@@ -1,0 +1,88 @@
+homeassistant:
+  enabled: true
+mqtt:
+  base_topic: zigbee2mqtt
+  server: mqtt://mosquitto:1883
+serial:
+  port: tcp://192.168.1.103:6638
+  adapter: ember
+frontend:
+  enabled: true
+  port: 8080
+advanced:
+  log_level: info
+  channel: 26
+  adapter_concurrent: 16
+  transmit_power: 20
+  adapter_delay: 0
+version: 5
+devices:
+  '0xa4c1380dcef3ffff':
+    friendly_name: Nicola's studio switch
+  '0xa4c1380e56fdffff':
+    friendly_name: Acquarium pump switch
+  '0xa4c1380c85edffff':
+    friendly_name: Kitchen lamp (black) switch
+  '0xa4c1380dcd74ffff':
+    friendly_name: Kitchen lamp (cooktop) switch
+  '0x3ccfb45e03d69ee2':
+    friendly_name: Upper corridor switch
+  '0xa4c1381897ae40de':
+    friendly_name: Upper corridor lamp
+  '0xa4c138edf5fcbe03':
+    friendly_name: Ground floor sensor
+  '0xa4c138999335d225':
+    friendly_name: First floor sensor
+  '0xa4c138a95f41affe':
+    friendly_name: Physical knob
+  '0xcc36bbfffe04e9f1':
+    friendly_name: PIR 1
+  '0xa4c138968fee10f0':
+    friendly_name: Lower corridor lamp
+  '0xa4c13894477a0057':
+    friendly_name: Bath lamp
+  '0xa4c13833869ee6dc':
+    friendly_name: Kitchen lamp (corner)
+  '0xa4c138f800970b39':
+    friendly_name: Nicola's desk lamp
+  '0xa4c13803a1359f83':
+    friendly_name: Living lamp (acquarium)
+  '0xa4c138f785de904e':
+    friendly_name: Living lamp (TV)
+  '0x180df9fffe23b770':
+    friendly_name: Garden lamp (east)
+  '0x180df9fffe815154':
+    friendly_name: Garden lamp (west)
+  '0xa4c138add2d944f6':
+    friendly_name: Girls lamp
+  '0xa4c138cd76e5f74c':
+    friendly_name: Light sensor
+  '0xa4c1386b4cd09ebe':
+    friendly_name: Roof sensor
+  '0xa4c1383985da4edd':
+    friendly_name: Garden sensor
+  '0xcc36bbfffe02720c':
+    friendly_name: PIR 2
+  '0xcc36bbfffe027220':
+    friendly_name: PIR 3
+  '0xcc36bbfffe028a58':
+    friendly_name: PIR 4
+  '0xa4c138337213ed47':
+    friendly_name: Heater switch
+  '0xe456acfffeb1bc05':
+    friendly_name: Well pump switch
+  '0xcc36bbfffe028a1b':
+    friendly_name: PIR 5
+groups:
+  '1':
+    friendly_name: first_floor_lights
+  '2':
+    friendly_name: garden_lights_poles
+  '3':
+    friendly_name: ground_floor_lights
+  '6':
+    friendly_name: kitchen_lights_switches
+  '7':
+    friendly_name: living_lights
+  '8':
+    friendly_name: red_lights

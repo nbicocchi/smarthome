@@ -1,0 +1,48 @@
+- platform: generic_thermostat
+  name: Heater thermostat
+  unique_id: heater_thermostat
+
+  # Relay / switch controlling the boiler thermostat input
+  heater: switch.heater_switch
+
+  # Temperature sensor used for regulation
+  target_sensor: sensor.first_floor_sensor_temperature
+
+  # Allowed setpoint range
+  min_temp: 10
+  max_temp: 30
+
+  # Default target temperature after startup
+  target_temp: 18
+
+  # Heating mode
+  ac_mode: false
+
+  # Hysteresis
+  # Turn heater ON below target - tolerance
+  cold_tolerance: 0.2
+
+  # Turn heater OFF above target + tolerance
+  hot_tolerance: 0.2
+
+  # Prevent rapid ON/OFF cycling
+  min_cycle_duration:
+    minutes: 45
+
+  # Safety limit: maximum continuous ON time
+  max_cycle_duration:
+    hours: 12
+
+  cycle_cooldown:
+    minutes: 45
+    
+  # Initial state after HA restart
+  initial_hvac_mode: "heat"
+
+  # Presets
+  comfort_temp: 19
+  eco_temp: 18
+  away_temp: 14
+
+  # Temperature adjustment step
+  precision: 0.5

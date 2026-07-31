@@ -1,0 +1,14 @@
+garden_state:
+  name: Garden state
+  options:
+    - "Off"
+    - "Soft"
+    - "Bright"
+
+home_state:
+  name: Home state
+  options:
+    - "Off"
+    - "Soft"
+    - "Bright"
+    - "Bedtime"
