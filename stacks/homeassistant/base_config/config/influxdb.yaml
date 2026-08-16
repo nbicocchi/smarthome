@@ -23,7 +23,6 @@ include:
     - sensor.energy_home
     - sensor.energy_grid_import
     - sensor.energy_grid_export
-    - sensor.heater_on_numeric
-    
+    - sensor.heater_on_numeric    
     
     

@@ -311,7 +311,7 @@
                 {
                   "type": "tile",
                   "entity": "sensor.temperature_in_range_duty_cycle_24h",
-                  "name": "TIR [18-27]",
+                  "name": "Temp in range (18-27)",
                   "vertical": false,
                   "features_position": "bottom"
                 },
@@ -325,7 +325,7 @@
                 {
                   "type": "tile",
                   "entity": "counter.heater_start_count_24h",
-                  "name": "Heating daily cycles",
+                  "name": "Heater cycles",
                   "vertical": false,
                   "features_position": "bottom"
                 }
@@ -459,6 +459,11 @@
               "show_state": true,
               "show_icon": true,
               "entity": "binary_sensor.pir_recent_motion"
+            },
+            {
+              "type": "entity",
+              "entity": "sensor.uptime",
+              "show_name": true
             }
           ],
           "footer": {},

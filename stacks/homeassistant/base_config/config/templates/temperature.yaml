@@ -1,30 +1,28 @@
 - binary_sensor:
-  - name: "Temperature in range"
-    state: >
-      {{ 18 <= states('sensor.first_floor_sensor_temperature')|float(0) <= 27 }}
-      
-  - name: "Heater on"
-    state: >
-      {{ is_state('switch.heater_switch', 'on') }}
+    - name: "Temperature in range"
+      state: >
+        {{ 18 <= states('sensor.first_floor_sensor_temperature') | float(0) <= 27 }}
+
+    - name: "Heater on"
+      device_class: running
+      state: >
+        {{ is_state('switch.heater_switch', 'on') }}
 
 - sensor:
-  - name: "Temperature in range duty cycle 24h"
-    unit_of_measurement: "%"
-    state_class: measurement
-    state: >
-      {{ (states('sensor.time_temperature_in_range_24h') | float(0) / 24 * 100) | round(1) }}
+    - name: "Temperature in range duty cycle 24h"
+      unit_of_measurement: "%"
+      state_class: measurement
+      state: >
+        {{ (states('sensor.time_temperature_in_range_24h') | float(0) / 24 * 100) | round(1) }}
 
-  - name: "Heater duty cycle 24h"
-    unit_of_measurement: "%"
-    state_class: measurement
-    state: >
-      {{ (states('sensor.time_heater_on_24h') | float(0) / 24 * 100) | round(1) }}
+    - name: "Heater duty cycle 24h"
+      unit_of_measurement: "%"
+      state_class: measurement
+      state: >
+        {{ (states('sensor.time_heater_on_24h') | float(0) / 24 * 100) | round(1) }}
 
-  - name: "Heater on numeric"
-    state: >
-      {% if is_state('switch.heater_switch','on') %}
-        1
-      {% else %}
-        0
-      {% endif %}
-    unit_of_measurement: ""
+    - name: "Heater on numeric"
+      unit_of_measurement: ""
+      state_class: measurement
+      state: >
+        {{ 1 if is_state('switch.heater_switch', 'on') else 0 }}

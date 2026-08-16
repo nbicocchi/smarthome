@@ -295,15 +295,18 @@
                       "type": "line",
                       "stroke_width": 2,
                       "color": "#607D8B",
-                      "stroke_dash": 5
+                      "stroke_dash": 5,
+                      "curve": "stepline"
                     },
                     {
                       "entity": "sensor.heater_on_numeric",
                       "name": "Heater ON",
                       "yaxis_id": "heater",
                       "type": "area",
-                      "opacity": 0.1,
-                      "color": "#FF9800"
+                      "opacity": 0.3,
+                      "color": "#FF9800",
+                      "stroke_width": 0,
+                      "curve": "stepline"
                     }
                   ]
                 },
@@ -371,8 +374,10 @@
                       "name": "Heater ON",
                       "yaxis_id": "heater",
                       "type": "area",
-                      "opacity": 0.1,
-                      "color": "#FF9800"
+                      "opacity": 0.3,
+                      "color": "#FF9800",
+                      "stroke_width": 0,
+                      "curve": "stepline"
                     }
                   ]
                 }
