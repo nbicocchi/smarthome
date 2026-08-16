@@ -3,14 +3,15 @@
   description: ''
   triggers:
   - trigger: time
-    at: '22:15:00'
+    at: '22:00:00'
   conditions: []
   actions:
-  - action: script.turn_on
+  - action: input_select.select_option
     metadata: {}
     target:
-      entity_id: script.home_bedtime
-    data: {}
+      entity_id: input_select.state_home
+    data:
+      option: script.home_bedtime
   mode: single
 - id: '1782311824634'
   alias: Knob - single click
@@ -20,7 +21,19 @@
     options:
       topic: zigbee2mqtt/Physical knob/action
       payload: single
-  actions: []
+  actions:
+  - action: input_select.select_option
+    metadata: {}
+    target:
+      entity_id: input_select.state_home
+    data:
+      option: script.home_soft
+  - action: input_select.select_option
+    metadata: {}
+    target:
+      entity_id: input_select.state_garden
+    data:
+      option: script.garden_soft
 - id: '1782312884447'
   alias: Knob - double click
   description: ''
@@ -30,7 +43,19 @@
       topic: zigbee2mqtt/Physical knob/action
       payload: double
   conditions: []
-  actions: []
+  actions:
+  - action: input_select.select_option
+    metadata: {}
+    target:
+      entity_id: input_select.state_home
+    data:
+      option: script.home_off
+  - action: input_select.select_option
+    metadata: {}
+    target:
+      entity_id: input_select.state_garden
+    data:
+      option: script.garden_off
   mode: single
 - id: '1782313215704'
   alias: Knob - rotate left
@@ -41,43 +66,45 @@
       topic: zigbee2mqtt/Physical knob/action
       payload: rotate_left
   conditions: []
-  actions: []
+  actions:
+  - action: input_select.select_option
+    metadata: {}
+    target:
+      entity_id: input_select.state_home
+    data:
+      option: script.home_soft_very
+  - action: input_select.select_option
+    metadata: {}
+    target:
+      entity_id: input_select.state_garden
+    data:
+      option: script.garden_soft_very
   mode: single
 - id: '1782314344551'
-  alias: Alarmo - trigger pir (night)
+  alias: Alarmo - Trigger PIR (night)
   description: ''
   triggers:
   - trigger: state
     entity_id:
     - binary_sensor.pir_all
-    to:
-    - 'on'
+    to: 'on'
   conditions:
   - condition: state
     entity_id: alarm_control_panel.alarmo
-    state:
-    - armed_night
+    state: armed_night
   actions:
-  - action: light.turn_on
-    metadata: {}
+  - action: input_select.select_option
     target:
-      entity_id: light.red_lights
+      entity_id: input_select.state_home_override
     data:
-      rgb_color:
-      - 255
-      - 0
-      - 0
-      brightness_pct: 50
+      option: script.home_red
   - delay:
-      hours: 0
       minutes: 10
-      seconds: 0
-      milliseconds: 0
-  - action: light.turn_off
-    metadata: {}
+  - action: input_select.select_option
     target:
-      entity_id: light.red_lights
-    data: {}
+      entity_id: input_select.state_home_override
+    data:
+      option: none
   mode: restart
 - id: '1782396257680'
   alias: Alarmo - arm away (home looks empty)
@@ -87,36 +114,45 @@
     entity_id:
     - person.nicola_bicocchi
     - person.marzia_risi
-    to: not_home
+    to:
+    - not_home
     for:
-      minutes: 30
+      hours: 0
+      minutes: 0
+      seconds: 0
   - trigger: state
     entity_id:
-    - binary_sensor.pir_all
+    - binary_sensor.pir_recent_motion
     to:
     - 'off'
     for:
       hours: 0
-      minutes: 30
+      minutes: 0
       seconds: 0
   conditions:
   - condition: state
     entity_id: person.nicola_bicocchi
-    state: not_home
+    state:
+    - not_home
     for:
-      minutes: 30
+      hours: 0
+      minutes: 0
+      seconds: 0
   - condition: state
     entity_id: person.marzia_risi
-    state: not_home
+    state:
+    - not_home
     for:
-      minutes: 30
+      hours: 0
+      minutes: 0
+      seconds: 0
   - condition: state
-    entity_id: binary_sensor.pir_all
+    entity_id: binary_sensor.pir_recent_motion
     state:
     - 'off'
     for:
       hours: 0
-      minutes: 30
+      minutes: 0
       seconds: 0
   - condition: state
     entity_id: alarm_control_panel.alarmo
@@ -128,13 +164,9 @@
   - action: alarm_control_panel.alarm_arm_away
     target:
       entity_id: alarm_control_panel.alarmo
-  - action: notify.notify
-    data:
-      title: Alarmo
-      message: Auto armed (empty house)
   mode: single
 - id: '1782468265372'
-  alias: Alarmo - trigger pir (away)
+  alias: Alarmo - trigger PIR (away)
   description: ''
   triggers:
   - trigger: state
@@ -171,13 +203,9 @@
     target:
       entity_id: alarm_control_panel.alarmo
     data: {}
-  - action: notify.notify
-    data:
-      title: Alarmo
-      message: Auto disarmed
   mode: single
 - id: '1783528089209'
-  alias: Alarmo - trigger camera (home, night, away)
+  alias: Alarmo - trigger camera (night, away)
   description: ''
   triggers:
   - trigger: state
@@ -185,46 +213,65 @@
     - sensor.annke_review_status
     to: ALERT
   conditions:
-  - condition: state
-    entity_id: alarm_control_panel.alarmo
-    state:
-    - armed_away
-    - armed_night
-    - armed_home
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: alarm_control_panel.alarmo
+      state: armed_night
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: alarm_control_panel.alarmo
+        state: armed_away
+      - condition: state
+        entity_id: sun.sun
+        state: below_horizon
   actions:
   - action: notify.notify
     data:
       title: "\U0001F4F7 Front Camera"
       message: Activity detected
+  - action: input_select.select_option
+    target:
+      entity_id: input_select.state_garden_override
+    data:
+      option: script.garden_security
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - action: input_select.select_option
+    target:
+      entity_id: input_select.state_garden_override
+    data:
+      option: none
   mode: single
 - id: '1784049262902'
-  alias: Lights - sleep
+  alias: Lights - off late night (home)
   description: ''
   triggers:
   - trigger: time
     at: 02:00:00
   conditions: []
   actions:
-  - action: script.turn_on
-    metadata: {}
+  - action: input_select.select_option
     target:
-      entity_id:
-      - script.home_off
-      - script.garden_off
-    data: {}
+      entity_id: input_select.state_home
+    data:
+      option: script.home_off
   mode: single
 - id: '1784117377964'
-  alias: Lights - sunset
+  alias: Lights - on at sunset (home)
   description: ''
   triggers:
   - trigger: numeric_state
-    entity_id:
-    - sensor.light_sensor_illuminance
+    entity_id: sensor.light_sensor_illuminance
     for:
       hours: 0
       minutes: 5
       seconds: 0
-    below: 700
+    below: 900
   conditions:
   - condition: sun
     before: sunset
@@ -233,14 +280,15 @@
       hours: -3
       minutes: 0
       seconds: 0
+  - condition: state
+    entity_id: input_select.state_home
+    state: script.home_off
   actions:
-  - action: script.turn_on
-    metadata: {}
+  - action: input_select.select_option
     target:
-      entity_id:
-      - script.home_soft
-      - script.garden_soft
-    data: {}
+      entity_id: input_select.state_home
+    data:
+      option: script.home_soft
   mode: single
 - id: '1784138757054'
   alias: Alarmo - arm home (after night)
@@ -255,62 +303,6 @@
     metadata: {}
     data: {}
   mode: single
-- id: '1785000881155'
-  alias: Well pump - reminder
-  description: ''
-  triggers:
-  - trigger: time_pattern
-    minutes: /15
-  conditions:
-  - condition: state
-    entity_id: switch.well_pump_switch
-    state:
-    - 'on'
-  actions:
-  - action: notify.notify
-    metadata: {}
-    data:
-      title: 'Irrigation '
-      message: Irrigation still running...
-  mode: single
-- id: '1785012950939'
-  alias: Well pump - auto on (irrigation)
-  description: ''
-  triggers:
-  - trigger: time
-    at: '13:01:00'
-  conditions: []
-  actions:
-  - action: switch.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: switch.well_pump_switch
-  - action: notify.notify
-    metadata: {}
-    data:
-      title: Irrigation
-      message: Irrigation started
-  mode: single
-- id: '1785013078110'
-  alias: Well pump - auto off (irrigation)
-  description: ''
-  triggers:
-  - trigger: time
-    at: '13:59:00'
-  conditions: []
-  actions:
-  - action: switch.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id: switch.well_pump_switch
-  - action: notify.notify
-    metadata: {}
-    data:
-      title: 'Irrigation '
-      message: Irrigation ended
-  mode: single
 - id: '1785015944438'
   alias: Knob - rotate right
   description: ''
@@ -320,35 +312,19 @@
       topic: zigbee2mqtt/Physical knob/action
       payload: rotate_right
   conditions: []
-  actions: []
-  mode: single
-- id: '1785016061457'
-  alias: Aquarium pump - turn on (morning)
-  description: ''
-  triggers:
-  - trigger: time
-    at: 08:00:00
-  conditions: []
   actions:
-  - action: switch.turn_on
+  - action: input_select.select_option
     metadata: {}
     target:
-      entity_id: switch.acquarium_pump_switch
-    data: {}
-  mode: single
-- id: '1785016288275'
-  alias: Aquarium pump - turn off (evening)
-  description: ''
-  triggers:
-  - trigger: time
-    at: '20:00:00'
-  conditions: []
-  actions:
-  - action: switch.turn_off
+      entity_id: input_select.state_home
+    data:
+      option: script.home_bright
+  - action: input_select.select_option
     metadata: {}
     target:
-      entity_id: switch.acquarium_pump_switch
-    data: {}
+      entity_id: input_select.state_garden
+    data:
+      option: script.garden_bright
   mode: single
 - id: '1785016710621'
   alias: Alarm - arm night (before night)
@@ -363,22 +339,6 @@
     data: {}
     target:
       entity_id: script.alarmo_toggle_home_to_night
-  mode: single
-- id: '1785219725609'
-  alias: Lights - sunrise
-  description: ''
-  triggers:
-  - trigger: sun.sunrise
-    options: {}
-  conditions: []
-  actions:
-  - action: script.turn_on
-    metadata: {}
-    target:
-      entity_id:
-      - script.garden_off
-      - script.home_off
-    data: {}
   mode: single
 - id: '1785281663953'
   alias: Heater - increment daily cycles
@@ -411,4 +371,90 @@
     target:
       entity_id: counter.heater_start_count_24h
     data: {}
+  mode: single
+- id: '1785869283532'
+  alias: Lights - on at sunset (garden)
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.light_sensor_illuminance
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    below: 150
+  conditions:
+  - condition: sun
+    before: sunset
+    after: sunset
+    after_offset:
+      hours: -3
+      minutes: 0
+      seconds: 0
+    before_offset:
+      hours: 1
+      minutes: 0
+      seconds: 0
+  - condition: state
+    entity_id: input_select.state_garden
+    state: script.garden_off
+  actions:
+  - action: input_select.select_option
+    target:
+      entity_id: input_select.state_garden
+    data:
+      option: script.garden_soft
+  mode: single
+- id: '1786810352721'
+  alias: Apply state - home
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.state_home
+    - input_select.state_home_override
+  actions:
+  - action: script.home_apply
+    data: {}
+  mode: single
+- id: '1786810585709'
+  alias: Apply state - garden
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.state_garden
+    - input_select.state_garden_override
+  actions:
+  - action: script.garden_apply
+  mode: single
+- id: '1786827072049'
+  alias: Lights - off at the night (garden)
+  description: ''
+  triggers:
+  - trigger: time
+    at: 02:01:00
+  conditions: []
+  actions:
+  - action: input_select.select_option
+    target:
+      entity_id: input_select.state_garden
+    data:
+      option: script.garden_off
+  mode: single
+- id: '1786827506449'
+  alias: Lights - bedtime (late)
+  description: ''
+  triggers:
+  - trigger: time
+    at: '23:00:00'
+  conditions: []
+  actions:
+  - action: input_select.select_option
+    metadata: {}
+    data:
+      option: script.home_soft_very
+    target:
+      entity_id: input_select.state_home
   mode: single

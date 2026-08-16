@@ -1,0 +1,498 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace.dashboard_mainteinance",
+  "data": {
+    "config": {
+      "views": [
+        {
+          "type": "sections",
+          "max_columns": 4,
+          "title": "Maintenance",
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "Inverter",
+                  "heading_style": "title"
+                },
+                {
+                  "type": "custom:apexcharts-card",
+                  "header": {
+                    "show": true,
+                    "title": "Inverter Detail",
+                    "show_states": true,
+                    "colorize_states": true
+                  },
+                  "graph_span": "24h",
+                  "apex_config": {
+                    "legend": {
+                      "show": false
+                    },
+                    "stroke": {
+                      "curve": "smooth",
+                      "width": 1.5
+                    },
+                    "chart": {
+                      "type": "area"
+                    },
+                    "fill": {
+                      "type": "gradient",
+                      "gradient": {
+                        "opacityFrom": 0.6,
+                        "opacityTo": 0.3
+                      }
+                    }
+                  },
+                  "series": [
+                    {
+                      "entity": "sensor.asw3000h_s2_ac_power",
+                      "name": "ASW3000H-S2",
+                      "type": "area"
+                    },
+                    {
+                      "entity": "sensor.asw3000_s_g2_ac_power",
+                      "name": "ASW3000-S-G2",
+                      "type": "area"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "Zigbee Network",
+                  "heading_style": "title"
+                },
+                {
+                  "type": "tile",
+                  "entity": "binary_sensor.zigbee2mqtt_bridge_connection_state"
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.zigbee2mqtt_bridge_version"
+                },
+                {
+                  "type": "heading",
+                  "heading": "IP Network",
+                  "heading_style": "title"
+                },
+                {
+                  "type": "custom:apexcharts-card",
+                  "header": {
+                    "show": true,
+                    "title": "Download vs Upload",
+                    "show_states": true,
+                    "colorize_states": true
+                  },
+                  "graph_span": "24h",
+                  "apex_config": {
+                    "chart": {
+                      "type": "bar"
+                    },
+                    "plotOptions": {
+                      "bar": {
+                        "columnWidth": "60%"
+                      }
+                    },
+                    "dataLabels": {
+                      "enabled": false
+                    }
+                  },
+                  "series": [
+                    {
+                      "entity": "sensor.office_deco_total_down",
+                      "name": "Download",
+                      "type": "column",
+                      "color": "#27ae60",
+                      "yaxis_id": "down",
+                      "group_by": {
+                        "duration": "1h",
+                        "func": "avg"
+                      }
+                    },
+                    {
+                      "entity": "sensor.office_deco_total_up",
+                      "name": "Upload",
+                      "type": "column",
+                      "color": "#e74c3c",
+                      "yaxis_id": "up",
+                      "group_by": {
+                        "duration": "1h",
+                        "func": "avg"
+                      }
+                    }
+                  ],
+                  "yaxis": [
+                    {
+                      "id": "down",
+                      "min": 0,
+                      "decimals": 0,
+                      "apex_config": {
+                        "title": {
+                          "text": "Down (KB/s)"
+                        }
+                      }
+                    },
+                    {
+                      "id": "up",
+                      "opposite": true,
+                      "min": 0,
+                      "decimals": 0,
+                      "apex_config": {
+                        "title": {
+                          "text": "Up (KB/s)"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "custom:apexcharts-card",
+                  "header": {
+                    "show": true,
+                    "title": "AP Clients"
+                  },
+                  "graph_span": "24h",
+                  "series": [
+                    {
+                      "entity": "sensor.office_deco_clients_clean",
+                      "name": "Office",
+                      "type": "column",
+                      "group_by": {
+                        "func": "avg",
+                        "duration": "1h"
+                      }
+                    },
+                    {
+                      "entity": "sensor.study_room_deco_clients_clean",
+                      "name": "Study Room",
+                      "type": "column",
+                      "group_by": {
+                        "func": "avg",
+                        "duration": "1h"
+                      }
+                    }
+                  ],
+                  "apex_config": {
+                    "chart": {
+                      "stacked": false
+                    },
+                    "plotOptions": {
+                      "bar": {
+                        "columnWidth": "60%"
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading_style": "title",
+                  "heading": "Batteries"
+                },
+                {
+                  "type": "custom:battery-state-card"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": []
+            }
+          ],
+          "cards": [],
+          "icon": "",
+          "show_icon_and_title": false,
+          "visible": []
+        },
+        {
+          "type": "sections",
+          "max_columns": 2,
+          "title": "Maintenance",
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "Heater",
+                  "heading_style": "title"
+                },
+                {
+                  "type": "custom:apexcharts-card",
+                  "header": {
+                    "show": true,
+                    "title": "Temperature",
+                    "show_states": false,
+                    "colorize_states": true
+                  },
+                  "graph_span": "24h",
+                  "yaxis": [
+                    {
+                      "id": "temperature",
+                      "decimals": 1,
+                      "apex_config": {
+                        "title": {
+                          "text": "°C"
+                        }
+                      }
+                    },
+                    {
+                      "id": "heater",
+                      "show": false,
+                      "min": 0,
+                      "max": 1
+                    }
+                  ],
+                  "series": [
+                    {
+                      "entity": "sensor.first_floor_sensor_temperature",
+                      "name": "First floor",
+                      "yaxis_id": "temperature",
+                      "type": "line",
+                      "stroke_width": 2,
+                      "color": "#03A9F4"
+                    },
+                    {
+                      "entity": "sensor.ground_floor_sensor_temperature",
+                      "name": "Ground floor",
+                      "yaxis_id": "temperature",
+                      "type": "line",
+                      "stroke_width": 2,
+                      "color": "#FFC107"
+                    },
+                    {
+                      "entity": "sensor.garden_sensor_temperature",
+                      "name": "Outdoor",
+                      "yaxis_id": "temperature",
+                      "type": "line",
+                      "stroke_width": 2,
+                      "color": "#4CAF50"
+                    },
+                    {
+                      "entity": "sensor.roof_sensor_temperature",
+                      "name": "Roof",
+                      "yaxis_id": "temperature",
+                      "type": "line",
+                      "stroke_width": 2,
+                      "color": "#9C27B0"
+                    },
+                    {
+                      "entity": "climate.heater_thermostat",
+                      "attribute": "temperature",
+                      "name": "Setpoint",
+                      "yaxis_id": "temperature",
+                      "type": "line",
+                      "stroke_width": 2,
+                      "color": "#607D8B",
+                      "stroke_dash": 5
+                    },
+                    {
+                      "entity": "sensor.heater_on_numeric",
+                      "name": "Heater ON",
+                      "yaxis_id": "heater",
+                      "type": "area",
+                      "opacity": 0.1,
+                      "color": "#FF9800"
+                    }
+                  ]
+                },
+                {
+                  "type": "custom:apexcharts-card",
+                  "header": {
+                    "show": true,
+                    "title": "Humidity",
+                    "show_states": false,
+                    "colorize_states": true
+                  },
+                  "graph_span": "24h",
+                  "yaxis": [
+                    {
+                      "id": "humidity",
+                      "decimals": 1,
+                      "apex_config": {
+                        "title": {
+                          "text": "\\%"
+                        }
+                      }
+                    },
+                    {
+                      "id": "heater",
+                      "show": false,
+                      "min": 0,
+                      "max": 1
+                    }
+                  ],
+                  "series": [
+                    {
+                      "entity": "sensor.first_floor_sensor_humidity",
+                      "name": "First floor",
+                      "yaxis_id": "humidity",
+                      "type": "line",
+                      "stroke_width": 2,
+                      "color": "#03A9F4"
+                    },
+                    {
+                      "entity": "sensor.ground_floor_sensor_humidity",
+                      "name": "Ground floor",
+                      "yaxis_id": "humidity",
+                      "type": "line",
+                      "stroke_width": 2,
+                      "color": "#FFC107"
+                    },
+                    {
+                      "entity": "sensor.garden_sensor_humidity",
+                      "name": "Outdoor",
+                      "yaxis_id": "humidity",
+                      "type": "line",
+                      "stroke_width": 2,
+                      "color": "#4CAF50"
+                    },
+                    {
+                      "entity": "sensor.roof_sensor_humidity",
+                      "name": "Roof",
+                      "yaxis_id": "humidity",
+                      "type": "line",
+                      "stroke_width": 2,
+                      "color": "#9C27B0"
+                    },
+                    {
+                      "entity": "sensor.heater_on_numeric",
+                      "name": "Heater ON",
+                      "yaxis_id": "heater",
+                      "type": "area",
+                      "opacity": 0.1,
+                      "color": "#FF9800"
+                    }
+                  ]
+                }
+              ],
+              "column_span": 2
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "Inverter",
+                  "heading_style": "title"
+                },
+                {
+                  "type": "custom:apexcharts-card",
+                  "header": {
+                    "show": true,
+                    "title": "Solar Power",
+                    "show_states": true,
+                    "colorize_states": true
+                  },
+                  "graph_span": "24h",
+                  "apex_config": {
+                    "legend": {
+                      "show": false
+                    },
+                    "stroke": {
+                      "curve": "smooth",
+                      "width": 1.5
+                    },
+                    "chart": {
+                      "type": "area"
+                    },
+                    "fill": {
+                      "type": "gradient",
+                      "gradient": {
+                        "opacityFrom": 0.6,
+                        "opacityTo": 0.3
+                      }
+                    }
+                  },
+                  "series": [
+                    {
+                      "entity": "sensor.asw3000h_s2_ac_power",
+                      "name": "ASW3000H-S2",
+                      "type": "area"
+                    },
+                    {
+                      "entity": "sensor.asw3000_s_g2_ac_power",
+                      "name": "ASW3000-S-G2",
+                      "type": "area"
+                    }
+                  ]
+                },
+                {
+                  "type": "custom:apexcharts-card",
+                  "header": {
+                    "show": true,
+                    "title": "Solar Power vs Home Power",
+                    "show_states": true,
+                    "colorize_states": true
+                  },
+                  "graph_span": "24h",
+                  "apex_config": {
+                    "legend": {
+                      "show": false
+                    },
+                    "stroke": {
+                      "curve": "smooth",
+                      "width": 1.5
+                    },
+                    "chart": {
+                      "type": "area"
+                    },
+                    "fill": {
+                      "type": "gradient",
+                      "gradient": {
+                        "opacityFrom": 0.6,
+                        "opacityTo": 0.3
+                      }
+                    }
+                  },
+                  "series": [
+                    {
+                      "entity": "sensor.power_solar",
+                      "name": "Solar Power",
+                      "type": "area"
+                    },
+                    {
+                      "entity": "sensor.power_home",
+                      "name": "Home Power",
+                      "type": "area"
+                    }
+                  ]
+                }
+              ],
+              "column_span": 2
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading_style": "title",
+                  "heading": "Batteries"
+                },
+                {
+                  "type": "custom:battery-state-card"
+                }
+              ],
+              "column_span": 2
+            }
+          ],
+          "cards": [],
+          "icon": "",
+          "show_icon_and_title": false,
+          "subview": true
+        }
+      ]
+    }
+  }
+}

@@ -1,95 +1,91 @@
 home_soft:
   sequence:
-  - action: input_select.select_option
-    metadata: {}
-    target:
-      entity_id: input_select.home_state
-    data:
-      option: Soft
   - action: switch.turn_on
-    metadata: {}
-    target:
-      entity_id:
-      - switch.kitchen_lights_switches
-    data: {}
-  - action: light.turn_on
-    metadata: {}
-    target:
-      entity_id:
-      - light.ground_floor_lights_2
-    data:
-      brightness_pct: 40
-      color_temp_kelvin: 2000
-  - action: light.turn_on
-    metadata: {}
-    target:
-      entity_id:
-      - light.first_floor_lights_2
-    data:
-      brightness_pct: 20
-      color_temp_kelvin: 2000
-  alias: Home soft
-  description: ''
-home_off:
-  sequence:
-  - action: input_select.select_option
-    metadata: {}
-    target:
-      entity_id: input_select.home_state
-    data:
-      option: 'Off'
-  - action: switch.turn_off
     metadata: {}
     data: {}
     target:
       entity_id: switch.kitchen_lights_switches
-  - action: light.turn_off
+  - action: switch.turn_off
     metadata: {}
     target:
       entity_id:
-      - light.first_floor_lights_2
-      - light.ground_floor_lights_2
+      - switch.buddha_s_lamp_switch
+      - switch.agata_s_room_switch
+    data: {}
+  - action: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 40
+      color_temp_kelvin: 2000
+    target:
+      entity_id: light.ground_floor_lights
+  - action: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 10
+      color_temp_kelvin: 2000
+    target:
+      entity_id: light.first_floor_lights
+  alias: Home soft
+  description: ''
+home_off:
+  sequence:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - light.ground_floor_lights
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - light.first_floor_lights
+  - action: switch.turn_off
+    metadata: {}
+    target:
+      entity_id: switch.all_switches
     data: {}
   alias: Home off
   description: ''
 garden_soft:
   sequence:
-  - action: input_select.select_option
-    metadata: {}
-    data:
-      option: Soft
-    target:
-      entity_id: input_select.garden_state
   - action: light.turn_on
     metadata: {}
-    target:
-      entity_id:
-      - light.garden_lights_poles_2
     data:
       brightness_pct: 50
+      color_temp_kelvin: 2405
+    target:
+      entity_id: light.garden_lights_poles
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
   - action: light.turn_on
     metadata: {}
     target:
       entity_id: light.garden_lights_walls
     data:
       brightness_pct: 5
+      color_temp_kelvin: 2000
   alias: Garden soft
   description: ''
 garden_bright:
   sequence:
-  - action: input_select.select_option
-    metadata: {}
-    data:
-      option: Bright
-    target:
-      entity_id: input_select.garden_state
   - action: light.turn_on
     metadata: {}
-    target:
-      entity_id:
-      - light.garden_lights_poles_2
     data:
       brightness_pct: 100
+      color_temp_kelvin: 2408
+    target:
+      entity_id: light.garden_lights_poles
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
   - action: light.turn_on
     metadata: {}
     target:
@@ -97,33 +93,30 @@ garden_bright:
       - light.garden_lights_walls
     data:
       brightness_pct: 100
+      color_temp_kelvin: 2000
   alias: Garden bright
   description: ''
 garden_off:
   sequence:
-  - action: input_select.select_option
-    metadata: {}
-    data:
-      option: 'Off'
-    target:
-      entity_id: input_select.garden_state
   - action: light.turn_off
     metadata: {}
-    target:
-      entity_id:
-      - light.garden_lights_walls
-      - light.garden_lights_poles_2
     data: {}
+    target:
+      entity_id: light.garden_lights_poles
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.garden_lights_walls
   alias: Garden off
   description: ''
 home_bedtime:
   sequence:
-  - action: input_select.select_option
-    metadata: {}
-    target:
-      entity_id: input_select.home_state
-    data:
-      option: Bedtime
   - action: switch.turn_off
     metadata: {}
     data: {}
@@ -131,22 +124,15 @@ home_bedtime:
       entity_id: switch.kitchen_lights_switches
   - action: light.turn_on
     metadata: {}
-    target:
-      entity_id: light.ground_floor_lights_2
     data:
-      brightness_pct: 25
+      brightness_pct: 20
       color_temp_kelvin: 2000
-  - action: light.turn_on
-    metadata: {}
     target:
-      entity_id: light.nicola_s_desk
-    data:
-      brightness_pct: 10
-      color_temp_kelvin: 2000
+      entity_id: light.ground_floor_lights
   - delay:
       hours: 0
       minutes: 0
-      seconds: 2
+      seconds: 1
       milliseconds: 0
   - action: light.turn_on
     metadata: {}
@@ -154,45 +140,37 @@ home_bedtime:
       entity_id:
       - light.upper_corridor_lamp
       - light.lower_corridor_lamp
-      - light.girls_lamp
     data:
       rgb_color:
       - 255
       - 0
-      - 207
+      - 170
       brightness_pct: 100
   alias: Home bedtime
   description: ''
 home_bright:
   sequence:
-  - action: input_select.select_option
-    metadata: {}
-    target:
-      entity_id: input_select.home_state
-    data:
-      option: Bright
   - action: switch.turn_on
     metadata: {}
-    target:
-      entity_id:
-      - switch.kitchen_lights_switches
     data: {}
+    target:
+      entity_id: switch.all_switches
   - action: light.turn_on
     metadata: {}
-    target:
-      entity_id:
-      - light.ground_floor_lights_2
     data:
       brightness_pct: 100
       color_temp_kelvin: 2000
-  - action: light.turn_on
-    metadata: {}
     target:
       entity_id:
-      - light.first_floor_lights_2
+      - light.ground_floor_lights
+  - action: light.turn_on
+    metadata: {}
     data:
       brightness_pct: 100
       color_temp_kelvin: 2000
+    target:
+      entity_id:
+      - light.first_floor_lights
   alias: Home bright
   description: ''
 alarmo_toggle_home_to_night:
@@ -220,4 +198,131 @@ alarmo_toggle_night_to_home:
       entity_id: alarm_control_panel.alarmo
     data: {}
   alias: 'Alarmo: toggle night to home'
+  description: ''
+home_soft_very:
+  sequence:
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.kitchen_lights_switches
+  - action: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 1
+      color_temp_kelvin: 2000
+    target:
+      entity_id: light.ground_floor_lights
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - action: light.turn_on
+    metadata: {}
+    target:
+      entity_id:
+      - light.upper_corridor_lamp
+      - light.lower_corridor_lamp
+    data:
+      rgb_color:
+      - 255
+      - 0
+      - 170
+      brightness_pct: 100
+  alias: Home soft (very)
+  description: ''
+garden_soft_very:
+  sequence:
+  - action: light.turn_on
+    metadata: {}
+    data:
+      color_temp_kelvin: 2405
+      brightness_pct: 1
+    target:
+      entity_id: light.garden_lights_poles
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - action: light.turn_on
+    metadata: {}
+    target:
+      entity_id: light.garden_lights_walls
+    data:
+      color_temp_kelvin: 2000
+      brightness_pct: 1
+  alias: Garden soft (very)
+  description: ''
+garden_apply:
+  sequence:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ states(''input_select.state_garden_override'') != ''none''
+          }}
+
+          '
+      sequence:
+      - action: script.turn_on
+        target:
+          entity_id: '{{ states(''input_select.state_garden_override'') }}
+
+            '
+    default:
+    - action: script.turn_on
+      target:
+        entity_id: '{{ states(''input_select.state_garden'') }}
+
+          '
+  alias: Garden apply
+  description: ''
+home_apply:
+  sequence:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ states(''input_select.state_home_override'') != ''none''
+          }}
+
+          '
+      sequence:
+      - action: script.turn_on
+        target:
+          entity_id: '{{ states(''input_select.state_home_override'') }}
+
+            '
+    default:
+    - action: script.turn_on
+      target:
+        entity_id: '{{ states(''input_select.state_home'') }}
+
+          '
+  alias: Home apply
+  description: ''
+garden_security:
+  sequence:
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.garden_lights_walls
+      - light.garden_lights_poles
+    data:
+      brightness_pct: 100
+  alias: Garden security
+  description: ''
+home_red:
+  sequence:
+  - action: light.turn_on
+    target:
+      entity_id: light.shared_lights
+    data:
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      brightness_pct: 50
+  alias: Home red
   description: ''

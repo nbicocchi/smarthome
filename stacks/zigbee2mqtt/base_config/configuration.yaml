@@ -18,15 +18,13 @@ advanced:
 version: 5
 devices:
   '0xa4c1380dcef3ffff':
-    friendly_name: Nicola's studio switch
+    friendly_name: Buddha's lamp switch
   '0xa4c1380e56fdffff':
-    friendly_name: Acquarium pump switch
+    friendly_name: Agata's room switch
   '0xa4c1380c85edffff':
     friendly_name: Kitchen lamp (black) switch
   '0xa4c1380dcd74ffff':
     friendly_name: Kitchen lamp (cooktop) switch
-  '0x3ccfb45e03d69ee2':
-    friendly_name: Upper corridor switch
   '0xa4c1381897ae40de':
     friendly_name: Upper corridor lamp
   '0xa4c138edf5fcbe03':
@@ -34,7 +32,7 @@ devices:
   '0xa4c138999335d225':
     friendly_name: First floor sensor
   '0xa4c138a95f41affe':
-    friendly_name: Physical knob
+    friendly_name: Knob 1
   '0xcc36bbfffe04e9f1':
     friendly_name: PIR 1
   '0xa4c138968fee10f0':
@@ -69,8 +67,6 @@ devices:
     friendly_name: PIR 4
   '0xa4c138337213ed47':
     friendly_name: Heater switch
-  '0xe456acfffeb1bc05':
-    friendly_name: Well pump switch
   '0xcc36bbfffe028a1b':
     friendly_name: PIR 5
 groups:
@@ -80,9 +76,11 @@ groups:
     friendly_name: garden_lights_poles
   '3':
     friendly_name: ground_floor_lights
+  '4':
+    friendly_name: all_switches
   '6':
     friendly_name: kitchen_lights_switches
   '7':
     friendly_name: living_lights
   '8':
-    friendly_name: red_lights
+    friendly_name: shared_lights
