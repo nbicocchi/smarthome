@@ -1,18 +1,29 @@
-- device_tracker:
-    - name: "Tracker Wi-Fi Galaxy S21"
-      icon: mdi:cellphone
-      in_zones: >
-        {% if is_state('binary_sensor.192_168_1_120', 'on') %}
-          ['zone.home']
-        {% else %}
-          []
-        {% endif %}
+- binary_sensor:
+  - name: "Galaxy S21 WiFi Presence"
+    state: "{{ is_state('binary_sensor.192_168_1_120', 'on') }}"
+    delay_off:
+      minutes: 15
 
-    - name: "Tracker Wi-Fi Galaxy A32"
-      icon: mdi:cellphone
-      in_zones: >
-        {% if is_state('binary_sensor.192_168_1_121', 'on') %}
-          ['zone.home']
-        {% else %}
-          []
-        {% endif %}
+  - name: "Galaxy A32 WiFi Presence"
+    state: "{{ is_state('binary_sensor.192_168_1_121', 'on') }}"
+    delay_off:
+      minutes: 15
+
+- device_tracker:
+  - name: "Tracker Wi-Fi Galaxy S21"
+    icon: mdi:cellphone
+    in_zones: >
+      {% if is_state('binary_sensor.galaxy_s21_wifi_presence', 'on') %}
+        ['zone.home']
+      {% else %}
+        []
+      {% endif %}
+
+  - name: "Tracker Wi-Fi Galaxy A32"
+    icon: mdi:cellphone
+    in_zones: >
+      {% if is_state('binary_sensor.galaxy_a32_wifi_presence', 'on') %}
+        ['zone.home']
+      {% else %}
+        []
+      {% endif %}

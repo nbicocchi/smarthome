@@ -173,32 +173,6 @@ home_bright:
       - light.first_floor_lights
   alias: Home bright
   description: ''
-alarmo_toggle_home_to_night:
-  sequence:
-  - condition: state
-    state:
-    - armed_home
-    entity_id: alarm_control_panel.alarmo
-  - action: alarm_control_panel.alarm_arm_night
-    metadata: {}
-    target:
-      entity_id: alarm_control_panel.alarmo
-    data: {}
-  alias: 'Alarmo: toggle home to night'
-  description: ''
-alarmo_toggle_night_to_home:
-  sequence:
-  - condition: state
-    state:
-    - armed_night
-    entity_id: alarm_control_panel.alarmo
-  - action: alarm_control_panel.alarm_arm_home
-    metadata: {}
-    target:
-      entity_id: alarm_control_panel.alarmo
-    data: {}
-  alias: 'Alarmo: toggle night to home'
-  description: ''
 home_soft_very:
   sequence:
   - action: switch.turn_off
@@ -325,4 +299,27 @@ home_red:
       - 0
       brightness_pct: 50
   alias: Home red
+  description: ''
+alarmo_manage_trigger:
+  sequence:
+  - condition: sun.is_night
+    options: {}
+  - action: input_select.select_option
+    metadata: {}
+    target:
+      entity_id: input_select.state_garden_override
+    data:
+      option: script.garden_security
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - action: input_select.select_option
+    metadata: {}
+    target:
+      entity_id: input_select.state_garden_override
+    data:
+      option: none
+  alias: Alarmo trigger actions
   description: ''

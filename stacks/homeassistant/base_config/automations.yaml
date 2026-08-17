@@ -81,7 +81,7 @@
       option: script.garden_soft_very
   mode: single
 - id: '1782314344551'
-  alias: Alarmo - Trigger PIR (night)
+  alias: Lights - red at night (home)
   description: ''
   triggers:
   - trigger: state
@@ -90,8 +90,11 @@
     to: 'on'
   conditions:
   - condition: state
-    entity_id: alarm_control_panel.alarmo
-    state: armed_night
+    entity_id: input_select.state_home
+    state:
+    - script.home_off
+  - condition: sun.is_night
+    options: {}
   actions:
   - action: input_select.select_option
     target:
@@ -158,31 +161,11 @@
     entity_id: alarm_control_panel.alarmo
     state:
     - armed_home
-    - armed_night
     - disarmed
   actions:
   - action: alarm_control_panel.alarm_arm_away
     target:
       entity_id: alarm_control_panel.alarmo
-  mode: single
-- id: '1782468265372'
-  alias: Alarmo - trigger PIR (away)
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - binary_sensor.pir_confirmed_motion
-    to:
-    - 'on'
-  conditions:
-  - condition: state
-    entity_id: alarm_control_panel.alarmo
-    state: armed_away
-  actions:
-  - action: notify.notify
-    data:
-      title: "\U0001F4F7 Presence sensor (all PIRs)"
-      message: Activity detected in the house while armed away!
   mode: single
 - id: '1782689779297'
   alias: Alarmo - arm home (someone comes back)
@@ -198,54 +181,11 @@
     entity_id: alarm_control_panel.alarmo
     state: armed_away
   actions:
-  - action: alarm_control_panel.alarm_arm_home
+  - action: alarm_control_panel.alarm_disarm
     metadata: {}
     target:
       entity_id: alarm_control_panel.alarmo
     data: {}
-  mode: single
-- id: '1783528089209'
-  alias: Alarmo - trigger camera (night, away)
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - sensor.annke_review_status
-    to: ALERT
-  conditions:
-  - condition: or
-    conditions:
-    - condition: state
-      entity_id: alarm_control_panel.alarmo
-      state: armed_night
-    - condition: and
-      conditions:
-      - condition: state
-        entity_id: alarm_control_panel.alarmo
-        state: armed_away
-      - condition: state
-        entity_id: sun.sun
-        state: below_horizon
-  actions:
-  - action: notify.notify
-    data:
-      title: "\U0001F4F7 Front Camera"
-      message: Activity detected
-  - action: input_select.select_option
-    target:
-      entity_id: input_select.state_garden_override
-    data:
-      option: script.garden_security
-  - delay:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
-  - action: input_select.select_option
-    target:
-      entity_id: input_select.state_garden_override
-    data:
-      option: none
   mode: single
 - id: '1784049262902'
   alias: Lights - off late night (home)
@@ -291,7 +231,7 @@
       option: script.home_soft
   mode: single
 - id: '1784138757054'
-  alias: Alarmo - arm home (after night)
+  alias: Alarmo - disarm (at sunrise)
   description: ''
   triggers:
   - trigger: sun
@@ -299,8 +239,14 @@
     offset: 0
   conditions: []
   actions:
-  - action: script.alarmo_toggle_night_to_home
+  - condition: state
+    state:
+    - armed_home
+    entity_id: alarm_control_panel.alarmo
+  - action: alarm_control_panel.alarm_disarm
     metadata: {}
+    target:
+      entity_id: alarm_control_panel.alarmo
     data: {}
   mode: single
 - id: '1785015944438'
@@ -327,18 +273,22 @@
       option: script.garden_bright
   mode: single
 - id: '1785016710621'
-  alias: Alarm - arm night (before night)
+  alias: Alarm - arm home (at night)
   description: ''
   triggers:
   - trigger: time
-    at: 02:00:00
+    at: 00:00:00
   conditions: []
   actions:
-  - action: script.turn_on
+  - condition: state
+    state:
+    - disarmed
+    entity_id: alarm_control_panel.alarmo
+  - action: alarm_control_panel.alarm_arm_home
     metadata: {}
-    data: {}
     target:
-      entity_id: script.alarmo_toggle_home_to_night
+      entity_id: alarm_control_panel.alarmo
+    data: {}
   mode: single
 - id: '1785281663953'
   alias: Heater - increment daily cycles
@@ -430,7 +380,7 @@
   - action: script.garden_apply
   mode: single
 - id: '1786827072049'
-  alias: Lights - off at the night (garden)
+  alias: Lights - off late night (garden)
   description: ''
   triggers:
   - trigger: time
