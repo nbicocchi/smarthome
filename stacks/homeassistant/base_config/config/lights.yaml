@@ -1,8 +1,0 @@
-- platform: group
-  name: Garden lights (walls)
-  unique_id: garden_lights_walls
-  entities:
-    - light.front_door_light
-    - light.garage_door_light
-    - light.studio_door_light
-    - light.parking_light
