@@ -11,6 +11,8 @@ frontend:
   port: 8080
 advanced:
   log_level: info
+  log_namespaced_levels:
+    z2m:mqtt: warning
   channel: 26
   adapter_concurrent: 16
   transmit_power: 20
