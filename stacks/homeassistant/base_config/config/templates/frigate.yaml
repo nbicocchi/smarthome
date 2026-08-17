@@ -1,6 +1,0 @@
-- binary_sensor:
-  - name: "Annke Alert"
-    unique_id: annke_alert
-    device_class: motion
-    state: >
-      {{ is_state('sensor.annke_review_status', 'ALERT') }}
