@@ -5,8 +5,6 @@ services:
     container_name: zigbee2mqtt
     restart: unless-stopped
 
-    user: ${USER}:${GROUP}
-
     ports:
       - "8080:8080"
 
