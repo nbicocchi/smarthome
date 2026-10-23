@@ -1,0 +1,26 @@
+services:
+
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:2026.10.1
+    container_name: homeassistant
+    restart: unless-stopped
+
+    ports:
+      - "8123:8123"
+
+    volumes:
+      - ${ROOT}/runtime/homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+
+    networks:
+      - mqtt-net
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  mqtt-net:
+    external: true
