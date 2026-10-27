@@ -1,17 +1,15 @@
 services:
-
-  mosquitto:
-    image: eclipse-mosquitto:2.0.22
-    container_name: mosquitto
+  portainer:
+    image: portainer/portainer-ce:lts
+    container_name: portainer
     restart: unless-stopped
 
     ports:
-      - "1883:1883"
-      - "9001:9001"
+      - "9443:9443"
 
     volumes:
-      - ${ROOT}/runtime/mosquitto/config:/mosquitto/config
-      - ${ROOT}/runtime/mosquitto/data:/mosquitto/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${ROOT}/runtime/portainer/data:/data
 
     networks:
       - mqtt-net

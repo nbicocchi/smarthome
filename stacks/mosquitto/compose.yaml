@@ -1,0 +1,28 @@
+services:
+
+  mosquitto:
+    image: eclipse-mosquitto:2.0.22
+    container_name: mosquitto
+    restart: unless-stopped
+
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+
+    volumes:
+      - ${ROOT}/runtime/mosquitto/config:/mosquitto/config
+      - ${ROOT}/runtime/mosquitto/data:/mosquitto/data
+      - ${ROOT}/runtime/mosquitto/log:/mosquitto/log
+
+    networks:
+      - mqtt-net
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  mqtt-net:
+    external: true
