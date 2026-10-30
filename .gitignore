@@ -19,5 +19,3 @@ backup/
 runtime_old_*
 runtime.bak_*
 
-# local repository (not tracked here)
-/stacks/tlapse/
