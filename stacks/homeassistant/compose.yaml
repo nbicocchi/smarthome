@@ -9,7 +9,7 @@ services:
       - "8123:8123"
 
     volumes:
-      - ${ROOT}/runtime/homeassistant:/config
+      - ../../runtime/homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
 
     networks:

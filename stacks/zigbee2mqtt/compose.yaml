@@ -9,7 +9,7 @@ services:
       - "8080:8080"
 
     volumes:
-      - ${ROOT}/runtime/zigbee2mqtt:/app/data
+      - ../../runtime/zigbee2mqtt:/app/data
 
     networks:
       - mqtt-net

@@ -7,17 +7,15 @@ services:
     ports:
       - "8086:8086"
 
-    environment:
-      - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=admin
-      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASSWORD}
-      - DOCKER_INFLUXDB_INIT_ORG=home
-      - DOCKER_INFLUXDB_INIT_BUCKET=homeassistant
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_TOKEN}
+    # Setup iniziale dalla UI:
+    # Organizzazione: home
+    # Bucket: homeassistant
+    # Utente iniziale: admin
+    # Configurare anche un token per Grafana.
 
     volumes:
-      - ${ROOT}/runtime/influxdb/data:/var/lib/influxdb2
-      - ${ROOT}/runtime/influxdb/config:/etc/influxdb2
+      - ../../runtime/influxdb/data:/var/lib/influxdb2
+      - ../../runtime/influxdb/config:/etc/influxdb2
 
     networks:
       - mqtt-net

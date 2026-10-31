@@ -13,8 +13,8 @@ services:
       - "8554:8554"   # RTSP stream
     
     volumes:
-      - ${ROOT}/runtime/frigate/config:/config
-      - ${ROOT}/runtime/frigate/media:/media
+      - ../../runtime/frigate/config:/config
+      - ../../runtime/frigate/media:/media
       - /etc/localtime:/etc/localtime:ro
 
     devices:

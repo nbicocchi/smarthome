@@ -9,7 +9,7 @@ services:
       - "3000:3000"
     
     volumes:
-      - ${ROOT}/runtime/grafana:/var/lib/grafana
+      - ../../runtime/grafana:/var/lib/grafana
 
     networks:
       - mqtt-net
