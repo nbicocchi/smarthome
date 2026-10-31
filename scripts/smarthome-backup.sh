@@ -145,7 +145,7 @@ echo "Sincronizzazione con rsync..."
 
 mkdir -p "$DEST"
 
-rsync -a --delete \
+rsync -a --delete --chown=nicola:nicola --chmod=D755,F644 \
     --exclude='/runtime/frigate/media/' \
     "$SOURCE/" "$DEST/"
 
