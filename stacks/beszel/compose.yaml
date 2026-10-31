@@ -1,7 +1,7 @@
 
 services:
   beszel:
-    image: henrygd/beszel:latest
+    image: henrygd/beszel:0.21.1
     container_name: beszel
     restart: unless-stopped
 
@@ -26,7 +26,7 @@ services:
 
 
   beszel-agent:
-    image: henrygd/beszel-agent:latest
+    image: henrygd/beszel-agent:0.21.1
     container_name: beszel-agent
     restart: unless-stopped
     network_mode: host
@@ -51,4 +51,3 @@ services:
 networks:
   mqtt-net:
     external: true
-
