@@ -45,7 +45,7 @@ DIRECTORY=$(cd -- "$DIRECTORY" && pwd -P)
 command -v docker >/dev/null || { echo "ERROR: docker not found in PATH" >&2; exit 1; }
 command -v flock >/dev/null || { echo "ERROR: flock not found in PATH" >&2; exit 1; }
 
-exec 9>"$DIRECTORY/.unisci-timelapse.lock"
+exec 9>"$DIRECTORY/.merge-timelapse.lock"
 flock -n 9 || { echo "ERROR: script already running" >&2; exit 1; }
 
 LIST=""
