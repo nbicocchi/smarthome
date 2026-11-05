@@ -5,9 +5,12 @@ services:
     container_name: grafana
     restart: unless-stopped
 
+    environment:
+      GF_SECURITY_ALLOW_EMBEDDING: "true"
+
     ports:
       - "3000:3000"
-    
+   
     volumes:
       - ../../runtime/grafana:/var/lib/grafana
 
